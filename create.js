@@ -1,14 +1,14 @@
-import uuid from "uuid";
+import uuidv1 from "uuid";
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 
 export async function main(event, context) {
   const data = JSON.parse(event.body);
   const params = {
-    TableName: process.env.tableName,
+    TableName: process.env.residentsTable,
     Item: {
       userId: event.requestContext.identity.cognitoIdentityId,
-      noteId: uuid.v1(),
+      noteId: uuidv1(),
       content: data.content,
       attachment: data.attachment,
       createdAt: Date.now()
