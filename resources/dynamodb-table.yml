@@ -1,19 +1,29 @@
 Resources:
-  NotesTable:
+  ResidentsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:custom.tableName}
+      TableName: ${self:custom.residentsTable}
       AttributeDefinitions:
-        - AttributeName: userId
-          AttributeType: S
-        - AttributeName: noteId
+        - AttributeName: residentId
           AttributeType: S
       KeySchema:
-        - AttributeName: userId
+        - AttributeName: residentId
           KeyType: HASH
-        - AttributeName: noteId
-          KeyType: RANGE
       # Set the capacity based on the stage
       ProvisionedThroughput:
         ReadCapacityUnits: ${self:custom.tableThroughput}
         WriteCapacityUnits: ${self:custom.tableThroughput}
+  # OtherTable:
+  #   Type: AWS::DynamoDB::Table
+  #   Properties:
+  #     TableName: ${self:custom.otherTable}
+  #     AttributeDefinitions:
+  #       - AttributeName: residentId
+  #         AttributeType: S
+  #     KeySchema:
+  #       - AttributeName: residentId
+  #         KeyType: HASH
+  #     # Set the capacity based on the stage
+  #     ProvisionedThroughput:
+  #       ReadCapacityUnits: ${self:custom.tableThroughput}
+  #       WriteCapacityUnits: ${self:custom.tableThroughput}
