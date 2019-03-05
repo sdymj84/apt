@@ -11,8 +11,13 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so we can use it while testing locally
   residentsTable: ${self:custom.stage}-residents
+<<<<<<< HEAD
   # otherTable: ${self:custom.stage}-other
 
+=======
+  apartsTable: ${self:custom.stage}-aparts
+  maintanancesTable: ${self:custom.stage}-maintanaces
+>>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
   # Set our DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
     prod: 5
@@ -36,7 +41,12 @@ provider:
   # under process.env.
   environment:
     residentsTable: ${self:custom.residentsTable}
+<<<<<<< HEAD
     # otherTable: ${self:custom.otherTable}
+=======
+    apartsTable: ${self:custom.apartsTable}
+    maintanancesTable: ${self:custom.maintanancesTable}
+>>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
     stripeSecretKey: ${self:custom.environment.stripeSecretKey}
 
   iamRoleStatements:
@@ -53,72 +63,54 @@ provider:
       # the specific table for the stage
       Resource:
         - "Fn::GetAtt": [ ResidentsTable, Arn ]
+<<<<<<< HEAD
         # - "Fn::GetAtt": [ OtherTable, Arn ]
+=======
+        - "Fn::GetAtt": [ ApartsTable, Arn ]
+        - "Fn::GetAtt": [ MaintanancesTable, Arn ]
+>>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
 
 functions:
-  # Defines an HTTP API endpoint that calls the main function in create.js
-  # - path: url path is /notes
-  # - method: POST request
-  # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
-  #     domain api call
-  # - authorizer: authenticate using the AWS IAM role
-  create:
-    handler: create.main
+  createResident:
+    handler: create.resident
     events:
       - http:
-          path: notes
+          path: residents
           method: post
           cors: true
           authorizer: aws_iam
-
-  get:
-    # Defines an HTTP API endpoint that calls the main function in get.js
-    # - path: url path is /notes/{id}
-    # - method: GET request
-    handler: get.main
+  getResident:
+    handler: get.resident
     events:
       - http:
-          path: notes/{id}
+          path: residents/{id}
           method: get
           cors: true
           authorizer: aws_iam
-
-  list:
-    # Defines an HTTP API endpoint that calls the main function in list.js
-    # - path: url path is /notes
-    # - method: GET request
-    handler: list.main
+  listResidents:
+    handler: list.resident
     events:
       - http:
-          path: notes
+          path: residents
           method: get
           cors: true
           authorizer: aws_iam
-
-  update:
-    # Defines an HTTP API endpoint that calls the main function in update.js
-    # - path: url path is /notes/{id}
-    # - method: PUT request
-    handler: update.main
+  updateResident:
+    handler: update.resident
     events:
       - http:
-          path: notes/{id}
+          path: residents/{id}
           method: put
           cors: true
           authorizer: aws_iam
-
-  delete:
-    # Defines an HTTP API endpoint that calls the main function in delete.js
-    # - path: url path is /notes/{id}
-    # - method: DELETE request
-    handler: delete.main
+  deleteResident:
+    handler: delete.resident
     events:
       - http:
-          path: notes/{id}
+          path: residents/{id}
           method: delete
           cors: true
           authorizer: aws_iam
-
   billing:
     handler: billing.main
     events:

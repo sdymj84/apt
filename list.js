@@ -1,7 +1,7 @@
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 
-export async function main(event, context) {
+export async function resident(event, context) {
   const params = {
     TableName: process.env.residentsTable,
     // 'KeyConditionExpression' defines the condition for the query
@@ -10,14 +10,15 @@ export async function main(event, context) {
     // 'ExpressionAttributeValues' defines the value in the condition
     // - ':userId': defines 'userId' to be Identity Pool identity id
     //   of the authenticated user
-    KeyConditionExpression: "userId = :userId",
-    ExpressionAttributeValues: {
-      ":userId": event.requestContext.identity.cognitoIdentityId
-    }
+
+    // KeyConditionExpression: "residentId = :residentId",
+    // ExpressionAttributeValues: {
+    //   ":residentId": event.requestContext.identity.cognitoIdentityId
+    // }
   };
 
   try {
-    const result = await dynamoDbLib.call("query", params);
+    const result = await dynamoDbLib.call("scan", params);
     // Return the matching list of items in response body
     return success(result.Items);
   } catch (e) {

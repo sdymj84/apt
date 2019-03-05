@@ -1,0 +1,38 @@
+Service Information
+service: apt-api
+stage: dev
+region: us-east-2
+stack: apt-api-dev
+resources: 49
+api keys:
+  None
+endpoints:
+  POST - https://lcner41oal.execute-api.us-east-2.amazonaws.com/dev/notes
+  GET - https://lcner41oal.execute-api.us-east-2.amazonaws.com/dev/notes/{id}
+  GET - https://lcner41oal.execute-api.us-east-2.amazonaws.com/dev/notes
+  PUT - https://lcner41oal.execute-api.us-east-2.amazonaws.com/dev/notes/{id}
+  DELETE - https://lcner41oal.execute-api.us-east-2.amazonaws.com/dev/notes/{id}
+  POST - https://lcner41oal.execute-api.us-east-2.amazonaws.com/dev/billing
+functions:
+  create: apt-api-dev-create
+  get: apt-api-dev-get
+  list: apt-api-dev-list
+  update: apt-api-dev-update
+  delete: apt-api-dev-delete
+  billing: apt-api-dev-billing
+layers:
+  None
+
+Stack Outputs
+AttachmentsBucketName: apt-api-dev-attachmentsbucket-7ivsdxaagvqo
+UserPoolClientId: 78dlhj8l7bc5tb6dgk5iql813n
+UserPoolId: us-east-2_g5AgIc12c
+DeleteLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:714401653350:function:apt-api-dev-delete:1
+CreateLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:714401653350:function:apt-api-dev-create:1
+GetLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:714401653350:function:apt-api-dev-get:1
+UpdateLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:714401653350:function:apt-api-dev-update:1
+IdentityPoolId: us-east-2:29fb9c2e-26fe-4108-be76-f3bc10625758
+BillingLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:714401653350:function:apt-api-dev-billing:1
+ListLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:714401653350:function:apt-api-dev-list:1
+ServiceEndpoint: https://lcner41oal.execute-api.us-east-2.amazonaws.com/dev
+ServerlessDeploymentBucketName: apt-api-dev-serverlessdeploymentbucket-uukyib8f2ptx

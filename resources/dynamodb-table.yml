@@ -5,6 +5,11 @@ Resources:
       TableName: ${self:custom.residentsTable}
       AttributeDefinitions:
         - AttributeName: residentId
+<<<<<<< HEAD
+          AttributeType: S
+      KeySchema:
+        - AttributeName: residentId
+=======
           AttributeType: S
       KeySchema:
         - AttributeName: residentId
@@ -13,6 +18,22 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: ${self:custom.tableThroughput}
         WriteCapacityUnits: ${self:custom.tableThroughput}
+  ApartsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.apartsTable}
+      AttributeDefinitions:
+        - AttributeName: apartId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: apartId
+>>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
+          KeyType: HASH
+      # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
+<<<<<<< HEAD
   # OtherTable:
   #   Type: AWS::DynamoDB::Table
   #   Properties:
@@ -27,3 +48,19 @@ Resources:
   #     ProvisionedThroughput:
   #       ReadCapacityUnits: ${self:custom.tableThroughput}
   #       WriteCapacityUnits: ${self:custom.tableThroughput}
+=======
+  MaintanancesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.maintanancesTable}
+      AttributeDefinitions:
+        - AttributeName: requestId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: requestId
+          KeyType: HASH
+      # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
+>>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
