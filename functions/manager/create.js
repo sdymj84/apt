@@ -1,6 +1,6 @@
 import uuidv1 from "uuid/v1";
-import * as dynamoDbLib from "./libs/dynamodb-lib";
-import { success, failure } from "./libs/response-lib";
+import * as dynamoDbLib from "../../libs/dynamodb-lib";
+import { success, failure } from "../../libs/response-lib";
 
 export async function resident(event, context) {
   const data = JSON.parse(event.body);

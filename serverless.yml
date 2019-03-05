@@ -58,8 +58,9 @@ provider:
         - "Fn::GetAtt": [ MaintanancesTable, Arn ]
 
 functions:
+  # Manager APIs
   createResident:
-    handler: create.resident
+    handler: functions/manager/create.resident
     events:
       - http:
           path: residents
@@ -67,7 +68,7 @@ functions:
           cors: true
           authorizer: aws_iam
   getResident:
-    handler: get.resident
+    handler: functions/manager/get.resident
     events:
       - http:
           path: residents/{id}
@@ -75,7 +76,7 @@ functions:
           cors: true
           authorizer: aws_iam
   listResidents:
-    handler: list.resident
+    handler: functions/manager/list.resident
     events:
       - http:
           path: residents
@@ -83,7 +84,7 @@ functions:
           cors: true
           authorizer: aws_iam
   updateResident:
-    handler: update.resident
+    handler: functions/manager/update.resident
     events:
       - http:
           path: residents/{id}
@@ -91,7 +92,7 @@ functions:
           cors: true
           authorizer: aws_iam
   deleteResident:
-    handler: delete.resident
+    handler: functions/manager/delete.resident
     events:
       - http:
           path: residents/{id}

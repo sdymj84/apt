@@ -1,7 +1,7 @@
-import * as dynamoDbLib from "./libs/dynamodb-lib";
-import { success, failure } from "./libs/response-lib";
+import * as dynamoDbLib from "../../libs/dynamodb-lib";
+import { success, failure } from "../../libs/response-lib";
 
-export async function main(event, context) {
+export async function resident(event, context) {
   const params = {
     TableName: process.env.residentsTable,
     // 'Key' defines the partition key and sort key of the item to be removed
