@@ -11,13 +11,8 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so we can use it while testing locally
   residentsTable: ${self:custom.stage}-residents
-<<<<<<< HEAD
-  # otherTable: ${self:custom.stage}-other
-
-=======
   apartsTable: ${self:custom.stage}-aparts
   maintanancesTable: ${self:custom.stage}-maintanaces
->>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
   # Set our DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
     prod: 5
@@ -41,12 +36,8 @@ provider:
   # under process.env.
   environment:
     residentsTable: ${self:custom.residentsTable}
-<<<<<<< HEAD
-    # otherTable: ${self:custom.otherTable}
-=======
     apartsTable: ${self:custom.apartsTable}
     maintanancesTable: ${self:custom.maintanancesTable}
->>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
     stripeSecretKey: ${self:custom.environment.stripeSecretKey}
 
   iamRoleStatements:
@@ -63,12 +54,8 @@ provider:
       # the specific table for the stage
       Resource:
         - "Fn::GetAtt": [ ResidentsTable, Arn ]
-<<<<<<< HEAD
-        # - "Fn::GetAtt": [ OtherTable, Arn ]
-=======
         - "Fn::GetAtt": [ ApartsTable, Arn ]
         - "Fn::GetAtt": [ MaintanancesTable, Arn ]
->>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
 
 functions:
   createResident:

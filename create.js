@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import uuidv1 from "uuid";
-=======
 import uuidv1 from "uuid/v1";
->>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 
@@ -11,8 +7,6 @@ export async function resident(event, context) {
   const d = new Date()
   const params = {
     TableName: process.env.residentsTable,
-<<<<<<< HEAD
-=======
     Item: {
       residentId: event.requestContext.identity.cognitoIdentityId,
       regiNum: data.regiNum,
@@ -101,7 +95,6 @@ export async function apart(event, context) {
   const data = JSON.parse(event.body);
   const params = {
     TableName: process.env.apartsTable,
->>>>>>> 56a193b4b8faeacaca846281d1855d8fc7b7025f
     Item: {
       userId: event.requestContext.identity.cognitoIdentityId,
       noteId: uuidv1(),
