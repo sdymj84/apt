@@ -1,0 +1,8 @@
+{
+  "body": "{\n  \"regiNum\": \"123456\",\n  \"isPrimary\": true,\n  \"firstName\": \"Minjun\",\n  \"lastName\": \"Youn\",\n  \"apartNum\": \"401\",\n  \"email\": \"wlgml44@gmail.com\",\n  \"phone\": \"9136206145\",\n  \"erContact\": {\n    \"firstName\": \"Hyeran\",\n    \"lastName\": \"Yu\",\n    \"phone\": \"9131231234\"\n  },\n  \"isPet\": false,\n  \"vehicles\": [{\n    \"year\": \"2011\",\n    \"make\": \"Kia\",\n    \"model\": \"Soul\",\n    \"color\": \"White\",\n    \"licensePlate\": \"263KJL\",\n    \"state\": \"KS\"\n  }, {\n    \"year\": \"2017\",\n    \"make\": \"Tesla\",\n    \"model\": \"Tesla S\",\n    \"color\": \"Black\",\n    \"licensePlate\": \"777MJY\",\n    \"state\": \"KS\"\n  }],\n  \"notification\": {\n    \"voiceCall\": false,\n    \"text\": false,\n    \"email\": true\n  },\n  \"leaseTerm\": 12\n}",
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-SUB-1235"
+    }
+  }
+}
