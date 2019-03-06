@@ -104,11 +104,19 @@ functions:
           cors: true
           authorizer: aws_iam
   billing:
-    handler: billing.main
+    handler: functions/billing.main
     events:
       - http:
           path: billing
           method: post
+          cors: true
+          authorizer: aws_iam
+  customMessage:
+    handler: functions/manager/customMessage.main
+    events:
+      - http:
+          path: customMessage
+          method: get
           cors: true
           authorizer: aws_iam
 
