@@ -1,15 +1,37 @@
-import uuidv1 from "uuid/v1";
+/* Use case  
+1. Future resident come to the office and fill up all document
+2. Manager sign up the new resident with all info on the manager system
+3. Resident get verification email with temporary password
+4. Resident verify email and login
+5. Resident see password change screen right away
+
+=> This lambda function gets triggered on No.2
+  - When manager press sign up button after filling up all resident info
+
+*/
+
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
+import Amplify, { Auth } from 'aws-amplify'
 
 export async function resident(event, context) {
   const data = JSON.parse(event.body);
   const d = new Date()
+
+  Amplify.configure({
+    Auth: {
+      region: process.env.region,
+      userPoolId: process.env.userPoolId,
+      identityPoolId: process.env.identityPoolId,
+      userPoolWebClientId: process.env.userPoolClientId
+    }
+  })
+
   const params = {
     TableName: process.env.residentsTable,
     Item: {
-      residentId: event.requestContext.identity.cognitoIdentityId,
-      regiNum: data.regiNum,
+      residentId: null,
+      regiNum: 'Apt' + Math.floor(100000 + Math.random() * 900000).toString(),
       isPrimary: data.isPrimary,
       firstName: data.firstName,
       lastName: data.lastName,
@@ -82,54 +104,19 @@ export async function resident(event, context) {
     "leaseTerm": 12
   } */
 
-  try {
-    await dynamoDbLib.call("put", params);
-    return success(params.Item);
-  } catch (e) {
-    return failure({ status: false });
+  const credential = {
+    username: params.Item.email,
+    password: params.Item.regiNum
   }
-}
-
-
-export async function apart(event, context) {
-  const data = JSON.parse(event.body);
-  const params = {
-    TableName: process.env.apartsTable,
-    Item: {
-      userId: event.requestContext.identity.cognitoIdentityId,
-      noteId: uuidv1(),
-      content: data.content,
-      attachment: data.attachment,
-      createdAt: Date.now()
-    }
-  };
 
   try {
+    console.log(params.Item.regiNum)
+    const newResident = await Auth.signUp(credential)
+    params.Item.residentId = newResident.userSub
     await dynamoDbLib.call("put", params);
     return success(params.Item);
   } catch (e) {
-    return failure({ status: false });
-  }
-}
-
-
-export async function maintanance(event, context) {
-  const data = JSON.parse(event.body);
-  const params = {
-    TableName: process.env.maintanancesTable,
-    Item: {
-      userId: event.requestContext.identity.cognitoIdentityId,
-      noteId: uuidv1(),
-      content: data.content,
-      attachment: data.attachment,
-      createdAt: Date.now()
-    }
-  };
-
-  try {
-    await dynamoDbLib.call("put", params);
-    return success(params.Item);
-  } catch (e) {
+    console.log(e)
     return failure({ status: false });
   }
 }

@@ -39,6 +39,10 @@ provider:
     apartsTable: ${self:custom.apartsTable}
     maintanancesTable: ${self:custom.maintanancesTable}
     stripeSecretKey: ${self:custom.environment.stripeSecretKey}
+    region: ${self:custom.environment.region}
+    userPoolClientId: ${self:custom.environment.userPoolClientId}
+    userPoolId: ${self:custom.environment.userPoolId}
+    identityPoolId: ${self:custom.environment.identityPoolId}
 
   iamRoleStatements:
     - Effect: Allow
