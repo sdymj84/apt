@@ -1,3 +1,11 @@
+/* Use Case
+1. Manager update resident information which resident are not allowed to update
+  (lease term, ...)
+2. Resident move apart -> Manager update apartNum
+  (maybe set schedule to change once the new apart is vacant)
+
+*/
+
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 
@@ -9,33 +17,37 @@ export async function resident(event, context) {
     // - 'userId': Identity Pool identity id of the authenticated user
     // - 'noteId': path parameter
     Key: {
-      residentId: event.requestContext.identity.cognitoIdentityId,
+      residentId: event.pathParameters.residentId,
     },
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
     UpdateExpression:
       "SET isPrimary = :isPrimary, \
+      apartNum = :apartNum, \
       firstName = :firstName, \
       lastName = :lastName, \
       email = :email, \
       phone = :phone, \
+      isPet = :isPet \
       erContact = :erContact, \
       vehicles = :vehicles, \
-      notification = :notification",
+      notification = :notification, \
+      leaseTerm = :leaseTerm",
 
     ExpressionAttributeValues: {
       ":isPrimary": data.isPrimary || false,
-      ":firstName": data.firstName || null,
-      ":lastName": data.lastName || null,
-      ":email": data.email || null,
-      ":phone": data.phone || null,
-      ":erContact": data.erContact || null,
+      ":apartNum": data.apartNum,
+      ":firstName": data.firstName,
+      ":lastName": data.lastName,
+      ":email": data.email,
+      ":phone": data.phone,
+      ":isPet": data.isPet || false,
+      ":erContact": data.erContact,
       ":vehicles": data.vehicles,
       ":notification": data.notification,
+      ":leaseTerm": data.leaseTerm,
 
       /* These can be modified by manager or system only
-      ":isPet": data.isPet || false,
-      ":leaseTerm": data.leaseTerm,
       ":leaseStartDate": data.leaseStartDate,
       ":leaseEndDate": d.setDate(d.getMonth() + data.leaseTerm), 
       */

@@ -1,3 +1,8 @@
+/* Use Case
+1. Manager see list of residents
+
+*/
+
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 

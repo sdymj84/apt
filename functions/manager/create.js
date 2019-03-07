@@ -1,4 +1,4 @@
-/* Use case  
+/* Use Case  
 1. Future resident come to the office and fill up all document
 2. Manager sign up the new resident with all info on the manager system
 3. Resident get verification email with temporary password
@@ -6,6 +6,7 @@
 5. Resident see password change screen right away
 
 => This lambda function gets triggered on No.2
+  - On sign up page, there's Apart selection option which shows vacant apart list
   - When manager press sign up button after filling up all resident info
 
 */

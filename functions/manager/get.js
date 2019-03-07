@@ -1,3 +1,11 @@
+/* Use Case
+1. Manager see specific resident by residentId if known (less likely to use)
+2. Manager can see Apart 
+  -> Apart has currentResidentId 
+  -> see resident using that currentResidentId
+
+*/
+
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 
