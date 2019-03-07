@@ -8,7 +8,7 @@ export async function resident(event, context) {
     // - 'userId': Identity Pool identity id of the authenticated user
     // - 'noteId': path parameter
     Key: {
-      residentId: event.requestContext.identity.cognitoIdentityId,
+      residentId: event.pathParameters.residentId,
     }
   };
 
