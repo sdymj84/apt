@@ -1,43 +1,32 @@
 Resources:
-  ResidentsTable:
+  ApartTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:custom.residentsTable}
+      TableName: ${self:custom.apartTable}
       AttributeDefinitions:
-        - AttributeName: residentId
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
           AttributeType: S
       KeySchema:
-        - AttributeName: residentId
+        - AttributeName: pk
           KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
       # Set the capacity based on the stage
       ProvisionedThroughput:
         ReadCapacityUnits: ${self:custom.tableThroughput}
         WriteCapacityUnits: ${self:custom.tableThroughput}
-  ApartsTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: ${self:custom.apartsTable}
-      AttributeDefinitions:
-        - AttributeName: apartId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: apartId
-          KeyType: HASH
-      # Set the capacity based on the stage
-      ProvisionedThroughput:
-        ReadCapacityUnits: ${self:custom.tableThroughput}
-        WriteCapacityUnits: ${self:custom.tableThroughput}
-  MaintanancesTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: ${self:custom.maintanancesTable}
-      AttributeDefinitions:
-        - AttributeName: requestId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: requestId
-          KeyType: HASH
-      # Set the capacity based on the stage
-      ProvisionedThroughput:
-        ReadCapacityUnits: ${self:custom.tableThroughput}
-        WriteCapacityUnits: ${self:custom.tableThroughput}
+      
+      GlobalSecondaryIndexes:
+        - IndexName: ${self:custom.apartIndex}
+          KeySchema:
+            - AttributeName: gsi_pk
+              KeyType: HASH
+            - AttributeName: gsi_sk
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: ${self:custom.tableThroughput}
+            WriteCapacityUnits: ${self:custom.tableThroughput}

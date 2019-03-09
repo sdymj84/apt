@@ -11,12 +11,13 @@ import { success, failure } from "../../libs/response-lib";
 
 export async function resident(event, context) {
   const params = {
-    TableName: process.env.residentsTable,
+    TableName: process.env.apartTable,
     // 'Key' defines the partition key and sort key of the item to be retrieved
     // - 'userId': Identity Pool identity id of the authenticated user
     // - 'noteId': path parameter
     Key: {
-      residentId: event.pathParameters.residentId,
+      pk: event.pathParameters.residentId,
+      sk: "0401",
     }
   };
 
@@ -29,6 +30,7 @@ export async function resident(event, context) {
       return failure({ status: false, error: "Item not found." });
     }
   } catch (e) {
+    console.log(e)
     return failure({ status: false });
   }
 }

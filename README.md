@@ -6,10 +6,13 @@ Entity tables
 - Maintanance
 
 Requirement for Manager
-- List all residnets by apartNum
-- Get apart by apartNum
-- List aparts by building number
+- List all residnets by apartId
+- Get apart by apartId
+- List all aparts
+- List all aparts by building number
 - List maintanances which status is open
+- List all maintanances by apartId
 
 Requriement for Resident
-- Get resident by residentId
+- Get resident, apart by residentId
+- List all maintanaces by apartId

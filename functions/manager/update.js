@@ -12,12 +12,12 @@ import { success, failure } from "../../libs/response-lib";
 export async function resident(event, context) {
   const data = JSON.parse(event.body);
   const params = {
-    TableName: process.env.residentsTable,
+    TableName: process.env.apartTable,
     // 'Key' defines the partition key and sort key of the item to be updated
     // - 'userId': Identity Pool identity id of the authenticated user
     // - 'noteId': path parameter
     Key: {
-      residentId: event.pathParameters.residentId,
+      pk: event.pathParameters.residentId,
     },
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
