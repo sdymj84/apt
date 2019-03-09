@@ -31,12 +31,7 @@ export async function resident(event, context) {
   const params = {
     TableName: process.env.apartTable,
     Item: {
-<<<<<<< HEAD
-      pk: "",             // residentId
-      sk: data.apartId,   // apartId
-=======
       residentId: "",
->>>>>>> dev
       regiNum: 'Apt' + Math.floor(100000 + Math.random() * 900000).toString(),
       isPrimary: data.isPrimary,
       firstName: data.firstName,
