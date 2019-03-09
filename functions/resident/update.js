@@ -13,9 +13,14 @@ export async function resident(event, context) {
   const data = JSON.parse(event.body);
   const params = {
     TableName: process.env.residentsTable,
+    // 'Key' defines the partition key and sort key of the item to be updated
+    // - 'userId': Identity Pool identity id of the authenticated user
+    // - 'noteId': path parameter
     Key: {
-      pk: event.pathParameters.residentId,
+      residentId: event.pathParameters.residentId,
     },
+    // 'UpdateExpression' defines the attributes to be updated
+    // 'ExpressionAttributeValues' defines the value in the update expression
     UpdateExpression:
       "SET isPrimary = :isPrimary, \
       apartNum = :apartNum, \
@@ -23,8 +28,8 @@ export async function resident(event, context) {
       lastName = :lastName, \
       email = :email, \
       phone = :phone, \
+      isPet = :isPet \
       erContact = :erContact, \
-      isPet = :isPet, \
       vehicles = :vehicles, \
       notification = :notification, \
       leaseTerm = :leaseTerm",
@@ -36,8 +41,8 @@ export async function resident(event, context) {
       ":lastName": data.lastName,
       ":email": data.email,
       ":phone": data.phone,
+      ":isPet": data.isPet || false,
       ":erContact": data.erContact,
-      ":isPet": data.isPet,
       ":vehicles": data.vehicles,
       ":notification": data.notification,
       ":leaseTerm": data.leaseTerm,
@@ -56,7 +61,6 @@ export async function resident(event, context) {
     console.log(result)
     return success({ status: true });
   } catch (e) {
-    console.log(e)
     return failure({ status: false });
   }
 }

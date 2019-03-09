@@ -29,14 +29,9 @@ export async function resident(event, context) {
   })
 
   const params = {
-    TableName: process.env.apartTable,
+    TableName: process.env.residentsTable,
     Item: {
-<<<<<<< HEAD
-      pk: "",             // residentId
-      sk: data.apartId,   // apartId
-=======
       residentId: "",
->>>>>>> dev
       regiNum: 'Apt' + Math.floor(100000 + Math.random() * 900000).toString(),
       isPrimary: data.isPrimary,
       firstName: data.firstName,
@@ -74,11 +69,11 @@ export async function resident(event, context) {
 
   /* mock event for create resident
   {
-    "apartId": "0401",
     "isPrimary": true,
     "firstName": "Jihee",
     "lastName": "Chung",
-    "email": "sdymj84@gmail.com",
+    "apartNum": "401",
+    "email": "wlgml44@gmail.com",
     "phone": "9136206145",
     "erContact": {
       "firstName": "Hyeran",
@@ -116,11 +111,11 @@ export async function resident(event, context) {
 
   try {
     const newResident = await Auth.signUp(credential)
-    params.Item.pk = newResident.userSub
+    params.Item.residentId = newResident.userSub
     await dynamoDbLib.call("put", params);
     return success(params.Item);
   } catch (e) {
-    console.log(e)
+    console.log("create.js : ", e)
     return failure({ status: false });
   }
 }
