@@ -7,94 +7,47 @@
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 
-export async function resident(event, context) {
-  const data = JSON.parse(event.body);
-  const d = new Date()
+export async function apart(event, context) {
+  const data = JSON.parse(event.body)
 
   const params = {
-    TableName: process.env.apartTable,
+    TableName: process.env.apartsTable,
     Item: {
-      residentId: "",
-      regiNum: 'Apt' + Math.floor(100000 + Math.random() * 900000).toString(),
-      isPrimary: data.isPrimary,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      apartNum: data.apartNum,
-      email: data.email,
-      phone: data.phone,
-      erContact: {
-        firstName: data.erContact.firstName,
-        lastName: data.erContact.lastName,
-        phone: data.erContact.phone,
-      },
-      isPet: data.isPet,
-      vehicles: data.vehicles.map(vehicle => {
-        return {
-          year: vehicle.year,
-          make: vehicle.make,
-          model: vehicle.model,
-          color: vehicle.color,
-          licensePlate: vehicle.licensePlate,
-          state: vehicle.state,
-        }
-      }),
-      notification: {
-        voiceCall: data.notification.voiceCall,
-        text: data.notification.text,
-        email: data.notification.email,
-      },
-      leaseTerm: data.leaseTerm,
-      moveInDate: Date.now(),
-      leaseStartDate: Date.now(),
-      leaseEndDate: d.setDate(d.getMonth() + data.leaseTerm),
+      pk: "SAVOY",
+      apartId: data.apartId,
+      residentId: [],
+      buildingNum: data.buildingNum,
+      address: data.address,
+      floorPlan: data.floorPlan,
+      isOccupied: false,
+      rentPrice: data.rentPrice,
+      announcement: data.announcement,
+      builtIn: Date.now()
     }
   };
 
   /* mock event for create resident
   {
     "apartId": "0401",
-    "isPrimary": true,
-    "firstName": "Jihee",
-    "lastName": "Chung",
-    "email": "sdymj84@gmail.com",
-    "phone": "9136206145",
-    "erContact": {
-      "firstName": "Hyeran",
-      "lastName": "Yu",
-      "phone": "9131231234"
+    "buildingNum": "4",
+    "address": {
+      "street": "5901 College Blvd",
+      "apt": "0401",
+      "city": "Overland Park",
+      "zipcode": "66211"
     },
-    "isPet": false,
-    "vehicles": [{
-      "year": "2011",
-      "make": "Kia",
-      "model": "Soul",
-      "color": "White",
-      "licensePlate": "263KJL",
-      "state": "KS"
-    }, {
-      "year": "2017",
-      "make": "Tesla",
-      "model": "Tesla S",
-      "color": "Black",
-      "licensePlate": "777MJY",
-      "state": "KS"
-    }],
-    "notification": {
-      "voiceCall": false,
-      "text": false,
-      "email": true
+    "floorPlan": {
+      "name": "Sunset",
+      "roomCount": 1,
+      "sqft": 925
     },
-    "leaseTerm": 12
+    "isOccupied": false,
+    "rentPrice": 950,
+    "announcement": "Welcome to new apartment!"
   } */
 
-  const credential = {
-    username: params.Item.email,
-    password: params.Item.regiNum
-  }
 
   try {
-    const newResident = await Auth.signUp(credential)
-    params.Item.pk = newResident.userSub
     await dynamoDbLib.call("put", params);
     return success(params.Item);
   } catch (e) {

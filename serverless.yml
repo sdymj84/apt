@@ -62,7 +62,8 @@ provider:
         - "Fn::GetAtt": [ MaintanancesTable, Arn ]
 
 functions:
-  # Manager APIs
+
+  # Residents APIs
   createResident:
     handler: functions/residents/create.resident
     events:
@@ -100,6 +101,32 @@ functions:
     events:
       - http:
           path: customMessage
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  # Aparts APIs
+  createApart:
+    handler: functions/aparts/create.apart
+    events:
+      - http:
+          path: aparts
+          method: post
+          cors: true
+          authorizer: aws_iam
+  getApart:
+    handler: functions/aparts/get.apart
+    events:
+      - http:
+          path: aparts/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  listAparts:
+    handler: functions/aparts/list.apart
+    events:
+      - http:
+          path: aparts
           method: get
           cors: true
           authorizer: aws_iam

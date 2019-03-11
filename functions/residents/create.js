@@ -39,27 +39,10 @@ export async function resident(event, context) {
       apartId: data.apartId,
       email: data.email,
       phone: data.phone,
-      erContact: {
-        firstName: data.erContact.firstName,
-        lastName: data.erContact.lastName,
-        phone: data.erContact.phone,
-      },
+      erContact: data.erContact,
       isPet: data.isPet,
-      vehicles: data.vehicles.map(vehicle => {
-        return {
-          year: vehicle.year,
-          make: vehicle.make,
-          model: vehicle.model,
-          color: vehicle.color,
-          licensePlate: vehicle.licensePlate,
-          state: vehicle.state,
-        }
-      }),
-      notification: {
-        voiceCall: data.notification.voiceCall,
-        text: data.notification.text,
-        email: data.notification.email,
-      },
+      vehicles: data.vehicles.map(vehicle => vehicle),
+      notification: data.notification,
       leaseTerm: data.leaseTerm,
       moveInDate: Date.now(),
       leaseStartDate: Date.now(),
