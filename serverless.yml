@@ -10,8 +10,9 @@ custom:
   # commands. Or fallsback to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so we can use it while testing locally
-  apartTable: ${self:custom.stage}-apart
-  apartIndex: ${self:custom.stage}-apart-gsi
+  residentsTable: ${self:custom.stage}-residents
+  apartsTable: ${self:custom.stage}-aparts
+  maintanancesTable: ${self:custom.stage}-maintanances
   # Set our DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
     prod: 5
@@ -34,8 +35,9 @@ provider:
   # These environment variables are made available to our functions
   # under process.env.
   environment:
-    apartTable: ${self:custom.apartTable}
-    apartIndex: ${self:custom.apartIndex}
+    residentsTable: ${self:custom.residentsTable}
+    apartsTable: ${self:custom.apartsTable}
+    maintanancesTable: ${self:custom.maintanancesTable}
     stripeSecretKey: ${self:custom.environment.stripeSecretKey}
     region: ${self:custom.environment.region}
     userPoolClientId: ${self:custom.environment.userPoolClientId}
@@ -55,28 +57,22 @@ provider:
       # Restrict our IAM role permissions to
       # the specific table for the stage
       Resource:
-        - "Fn::GetAtt": [ ApartTable, Arn ]
+        - "Fn::GetAtt": [ ResidentsTable, Arn ]
+        - "Fn::GetAtt": [ ApartsTable, Arn ]
+        - "Fn::GetAtt": [ MaintanancesTable, Arn ]
 
 functions:
   # Manager APIs
   createResident:
-    handler: functions/manager/create.resident
+    handler: functions/residents/create.resident
     events:
       - http:
           path: residents
           method: post
           cors: true
           authorizer: aws_iam
-  listResidents:
-    handler: functions/manager/list.resident
-    events:
-      - http:
-          path: residents
-          method: get
-          cors: true
-          authorizer: aws_iam
   updateResident:
-    handler: functions/manager/update.resident
+    handler: functions/residents/update.resident
     events:
       - http:
           path: residents/{id}
@@ -84,7 +80,7 @@ functions:
           cors: true
           authorizer: aws_iam
   deleteResident:
-    handler: functions/manager/delete.resident
+    handler: functions/residents/delete.resident
     events:
       - http:
           path: residents/{id}
@@ -100,7 +96,7 @@ functions:
           cors: true
           authorizer: aws_iam
   customMessage:
-    handler: functions/manager/customMessage.main
+    handler: functions/residents/customMessage.main
     events:
       - http:
           path: customMessage
