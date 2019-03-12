@@ -104,7 +104,7 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
-
+  
   # Aparts APIs
   createApart:
     handler: functions/aparts/create.apart
@@ -118,7 +118,7 @@ functions:
     handler: functions/aparts/get.apart
     events:
       - http:
-          path: aparts/{id}
+          path: aparts/{aid}
           method: get
           cors: true
           authorizer: aws_iam
@@ -134,7 +134,7 @@ functions:
     handler: functions/aparts/update.apart
     events:
       - http:
-          path: aparts/{id}
+          path: aparts/{aid}
           method: put
           cors: true
           authorizer: aws_iam
@@ -142,7 +142,7 @@ functions:
     handler: functions/aparts/update.addResident
     events:
       - http:
-          path: aparts/{aid}/{rid}
+          path: aparts/{aid}/add/{rid}
           method: put
           cors: true
           authorizer: aws_iam
@@ -150,7 +150,7 @@ functions:
     handler: functions/aparts/update.removeResident
     events:
       - http:
-          path: aparts/{aid}/{rid}
+          path: aparts/{aid}/remove/{rid}
           method: put
           cors: true
           authorizer: aws_iam
@@ -160,7 +160,7 @@ functions:
     handler: functions/maintanances/create.request
     events:
       - http:
-          path: request
+          path: requests
           method: post
           cors: true
           authorizer: aws_iam
