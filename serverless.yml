@@ -130,6 +130,30 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  updateApart:
+    handler: functions/aparts/update.apart
+    events:
+      - http:
+          path: aparts/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  addResidentInApart:
+    handler: functions/aparts/update.addResident
+    events:
+      - http:
+          path: aparts/{aid}/{rid}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  removeResidentInApart:
+    handler: functions/aparts/update.removeResident
+    events:
+      - http:
+          path: aparts/{aid}/{rid}
+          method: put
+          cors: true
+          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:

@@ -1,11 +1,6 @@
 {
-  "body": "{\"content\":\"new world\",\"attachment\":\"new.jpg\"}",
+  "body": "{\r\n    \"residentId\": [\"63c2799f-d78b-4c0b-b7d5-f362be3b2ae3\"],\r\n    \"isOccupied\": true,\r\n    \"rentPrice\": 950,\r\n    \"announcement\": \"Welcome Minjun\",\r\n    \"address\": {\r\n      \"street\": \"5901 College Blvd\",\r\n      \"apt\": \"0401\",\r\n      \"city\": \"Overland Park\",\r\n      \"zipcode\": \"66211\"\r\n    },\r\n    \"floorPlan\": {\r\n      \"name\": \"Sunset\",\r\n      \"roomCount\": 1,\r\n      \"sqft\": 925\r\n    },\r\n    \"buildingNum\": \"4\"\r\n  }",
   "pathParameters": {
-    "id": "578eb840-f70f-11e6-9d1a-1359b3b22944"
-  },
-  "requestContext": {
-    "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
-    }
+    "apartId": "0401"
   }
 }
