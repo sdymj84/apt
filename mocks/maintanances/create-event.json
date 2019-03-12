@@ -1,8 +1,11 @@
 {
-  "body": "{\"content\":\"hello world\",\"attachment\":\"hello.jpg\"}",
+  "body": "{\r\n    \"priority\": \"Routine\",\r\n    \"phone\": \"9133536799\",\r\n    \"where\": \"Bathroom\",\r\n    \"description\": \"Curtain stick fell off\",\r\n    \"permissionToEnter\": true,\r\n    \"attachment\": \"stick.jpg\"\r\n  }",
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
+      "cognitoIdentityId": "63c2799f-d78b-4c0b-b7d5-f362be3b2ae3"
     }
+  },
+  "pathParameters": {
+    "apartId": "0401"
   }
 }

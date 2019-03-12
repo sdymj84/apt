@@ -154,6 +154,16 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+  
+  # Maintanances APIs
+  createRequest:
+    handler: functions/maintanances/create.request
+    events:
+      - http:
+          path: request
+          method: post
+          cors: true
+          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:
