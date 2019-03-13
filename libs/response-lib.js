@@ -7,6 +7,7 @@ export function failure(body) {
 }
 
 function buildResponse(statusCode, body) {
+  console.log("[response-lib]")
   return {
     statusCode: statusCode,
     headers: {

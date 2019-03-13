@@ -39,6 +39,11 @@
   - On sign up page, there's Apart selection option which shows vacant apart list
   - When manager press sign up button after filling up all resident info
 
+### getResident = /residents/{rid}
+- Use Case
+1. Resident login their account
+  -> Look up their profile
+
 ### updateResident - /residents/{rid}
 - Use Case
 1. Manager update resident information which resident are not allowed to update
