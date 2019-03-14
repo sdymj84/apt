@@ -11,16 +11,21 @@ export async function resident(event, context) {
   const params = {
     TableName: process.env.residentsTable,
     Key: {
-      residentId: event.pathParameters.residentId
+      residentId: event.pathParameters.id // the name 'id' is from '/{id}'
     }
   };
 
 
   try {
     const result = await dynamoDbLib.call("get", params);
-    return success(result.Item);
+    if (result.Item) {
+      // Return the retrieved item
+      return success(result.Item);
+    } else {
+      return failure({ status: false, error: "Item not found." });
+    }
   } catch (e) {
-    console.log('[get.js]', e)
+    console.log(e)
     return failure({ status: false });
   }
 }

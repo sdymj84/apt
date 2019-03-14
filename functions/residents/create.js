@@ -52,11 +52,11 @@ export async function resident(event, context) {
 
   /* mock event for create resident
   {
-    "apartId": "0401",
+    "apartId": "0403",
     "isPrimary": true,
-    "firstName": "Minjun",
-    "lastName": "Youn",
-    "email": "sdymj84@gmail.com",
+    "firstName": "Minjun2",
+    "lastName": "Youn2",
+    "email": "sdymj841@gmail.com",
     "phone": "9136206145",
     "erContact": {
       "firstName": "Hyeran",
