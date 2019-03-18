@@ -14,10 +14,9 @@ export async function apart(event, context) {
     TableName: process.env.apartsTable,
     Key: {
       pk: "SAVOY",
-      apartId: event.pathParameters.apartId,
+      apartId: event.pathParameters.aid,
     }
   };
-
 
   try {
     const result = await dynamoDbLib.call("get", params);
