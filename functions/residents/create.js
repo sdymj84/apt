@@ -13,7 +13,7 @@
 
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
-import Amplify, { Auth } from 'aws-amplify'
+import Amplify from 'aws-amplify'
 
 export async function resident(event, context) {
   const data = JSON.parse(event.body);
@@ -31,8 +31,8 @@ export async function resident(event, context) {
   const params = {
     TableName: process.env.residentsTable,
     Item: {
-      residentId: "",
-      regiNum: 'Apt' + Math.floor(100000 + Math.random() * 900000).toString(),
+      residentId: data.residentId,
+      regiNum: data.regiNum,
       isPrimary: data.isPrimary,
       firstName: data.firstName,
       lastName: data.lastName,
@@ -42,7 +42,7 @@ export async function resident(event, context) {
       erContact: data.erContact,
       isPet: data.isPet,
       vehicles: data.vehicles.map(vehicle => vehicle),
-      notification: data.notification,
+      notifications: data.notifications,
       leaseTerm: data.leaseTerm,
       moveInDate: Date.now(),
       leaseStartDate: Date.now(),
@@ -52,53 +52,48 @@ export async function resident(event, context) {
 
   /* mock event for create resident
   {
-    "apartId": "0403",
-    "isPrimary": true,
-    "firstName": "Minjun2",
-    "lastName": "Youn2",
-    "email": "sdymj841@gmail.com",
-    "phone": "9136206145",
+    "residentId": "test-id-1",
+    "apartId":"0401",
+    "regiNum":"Apt123123",
+    "isExpanded":true,
+    "isLoading":false,
+    "firstName":"Gildong",
+    "lastName":"Hong",
+    "email":"hong@gmail.com",
+    "phone":"9131234567",
+    "isPrimary":false,
+    "isPet":false,
     "erContact": {
-      "firstName": "Hyeran",
-      "lastName": "Yu",
-      "phone": "9131231234"
+      "firstName":"E",
+      "lastName":"R",
+      "phone":"991"
     },
-    "isPet": false,
     "vehicles": [{
-      "year": "2011",
-      "make": "Kia",
-      "model": "Soul",
-      "color": "White",
-      "licensePlate": "263KJL",
-      "state": "KS"
-    }, {
-      "year": "2017",
-      "make": "Tesla",
-      "model": "Tesla S",
-      "color": "Black",
-      "licensePlate": "777MJY",
-      "state": "KS"
+      "year":"",
+      "make":"Nissan",
+      "model":"350z",
+      "color":"Grey",
+      "licensePlate":"123ABC",
+      "state":"KS"
     }],
-    "notification": {
-      "voiceCall": false,
-      "text": false,
-      "email": true
+    "notifications": {
+      "isVoiceCallSub":false,
+      "isTextSub":false,
+      "isEmailSub":true
     },
-    "leaseTerm": 12
+    "leaseTerm":12
   } */
 
-  const credential = {
+  /* const credential = {
     username: params.Item.email,
     password: params.Item.regiNum
   }
-
+ */
   try {
-    const newResident = await Auth.signUp(credential)
-    params.Item.residentId = newResident.userSub
     await dynamoDbLib.call("put", params);
     return success(params.Item);
   } catch (e) {
     console.log(e)
-    return failure({ status: false });
+    return failure({ status: false, error: e });
   }
 }

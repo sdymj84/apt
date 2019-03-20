@@ -99,3 +99,18 @@ Note : only delete from DB, not from user pool
 1. Resident create maintanance request from website
 2. Manager get call from Resident who can't use website
   -> Manager look up that apart -> Create maintanance request for resident
+
+
+
+# Notes
+- DynamoDB doesn't accept empty string so gave option as below to change empty string to Null
+  new AWS.DynamoDB.DocumentClient({
+    convertEmptyValues: true
+  });
+
+- Debugging order
+  1. invoke local
+  2. api cli test
+  3. client test
+
+- Add error message on response object in order to find out error detail on client side
