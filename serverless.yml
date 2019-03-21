@@ -150,7 +150,7 @@ functions:
     handler: functions/aparts/update.addResident
     events:
       - http:
-          path: aparts/{aid}/add/{rid}
+          path: aparts/{aid}/add
           method: put
           cors: true
           authorizer: aws_iam
@@ -158,7 +158,7 @@ functions:
     handler: functions/aparts/update.removeResident
     events:
       - http:
-          path: aparts/{aid}/remove/{rid}
+          path: aparts/{aid}/remove
           method: put
           cors: true
           authorizer: aws_iam

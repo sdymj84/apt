@@ -78,21 +78,27 @@ export async function apart(event, context) {
   System add Resident in Apart
 ===================================================================*/
 export async function addResident(event, context) {
+  const data = JSON.parse(event.body)
   const params = {
     TableName: process.env.apartsTable,
     Key: {
       pk: "SAVOY",
-      apartId: event.pathParameters.apartId
+      apartId: event.pathParameters.aid
     },
     UpdateExpression:
-      "SET residentId = list_append(residentId, :residentId), \
+      "SET residents = list_append(residents, :residents), \
       isOccupied = :isOccupied",
     ExpressionAttributeValues: {
-      ":residentId": [event.pathParameters.residentId],
+      ":residents": [{
+        id: data.residentId,
+        name: data.name
+      }],
       ":isOccupied": true,
     },
     ReturnValues: "ALL_NEW",
   };
+
+  console.log(params)
 
   try {
     const result = await dynamoDbLib.call("update", params);
@@ -103,6 +109,12 @@ export async function addResident(event, context) {
   }
 }
 
+/* 
+{
+  "residentId": "test-resident-id",
+  "name": "Minjun Youn"
+}
+*/
 
 /*===================================================================
   System remove Resident in Apart
@@ -140,7 +152,7 @@ export async function removeResident(event, context) {
 
   } catch (e) {
     console.log(e)
-    return failure({ status: false });
+    return failure({ status: false, error: e });
   }
 
 

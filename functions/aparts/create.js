@@ -15,7 +15,7 @@ export async function apart(event, context) {
     Item: {
       pk: "SAVOY",
       apartId: data.apartId,
-      residentId: [],
+      residents: [],
       buildingNum: data.buildingNum,
       address: data.address,
       floorPlan: data.floorPlan,
