@@ -6,11 +6,24 @@ export function main(event, context, callback) {
     const { userName, region } = event
     const { clientId } = event.callerContext
     const { email } = event.request.userAttributes
-    const url = 'https://example.com/api/confirmSignup'
+    const url = 'http://localhost:3001/resident/initial-password-setup'
     const link = `<a href="${url}?code=${codeParameter}&username=${userName}&clientId=${clientId}&region=${region}&email=${email}" target="_blank">here</a>`
-    event.response.emailSubject = "Your verification link"; // event.request.codeParameter
-    event.response.emailMessage = `Thank you for signing up. Click ${link} to verify your email.`;
+    event.response.emailSubject = "Welcome to Savoy Apartment. Please setup the account"; // event.request.codeParameter
+    event.response.emailMessage = `Thank you for signing up. 
+    Click ${link} to verify your email and change password.`;
   }
   callback(null, event)
 
 }
+
+
+/*
+
+http://localhost:3001/resident/initial-password-setup
+?code=853009
+&username=d0d1cfaf-3b63-4449-8777-fbfc9083c208
+&clientId=8s72qccqdrvlekacimtuol1kl
+&region=us-east-2
+&email=sdymj84@gmail.com
+
+*/
