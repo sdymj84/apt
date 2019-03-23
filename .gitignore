@@ -52,4 +52,4 @@ env.yml
 .idea
 
 # API test
-api-cli-test.js
+api-cli-test
