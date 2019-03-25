@@ -34,6 +34,7 @@ export async function apart(event, context) {
       "street": "5901 College Blvd",
       "apt": "0401",
       "city": "Overland Park",
+      "state": "KS",
       "zipcode": "66211"
     },
     "floorPlan": {
