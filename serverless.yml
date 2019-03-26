@@ -134,7 +134,7 @@ functions:
     handler: functions/aparts/list.apart
     events:
       - http:
-          path: aparts
+          path: aparts/list/{aid}
           method: get
           cors: true
           authorizer: aws_iam
