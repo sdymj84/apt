@@ -154,6 +154,14 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+  updateAnnouncement:
+    handler: functions/aparts/updateAnnouncement.apart
+    events:
+      - http:
+          path: aparts/{aid}
+          method: put
+          cors: true
+          authorizer: aws_iam
   addResidentInApart:
     handler: functions/aparts/update.addResident
     events:

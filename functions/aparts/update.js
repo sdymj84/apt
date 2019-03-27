@@ -69,7 +69,7 @@ export async function apart(event, context) {
     return success(result);
   } catch (e) {
     console.log(e)
-    return failure({ status: false });
+    return failure({ status: false, error: e });
   }
 }
 
@@ -105,7 +105,7 @@ export async function addResident(event, context) {
     return success(result);
   } catch (e) {
     console.log(e)
-    return failure({ status: false });
+    return failure({ status: false, error: e });
   }
 }
 
