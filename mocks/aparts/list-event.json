@@ -1,5 +1,7 @@
 {
-  "body": "{\"isPet\":true}",
+  "queryStringParameters": {
+    "isPet": true
+  },
   "pathParameters": {
     "aid": ""
   }
