@@ -138,6 +138,14 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  listApartsWithFilter:
+    handler: functions/aparts/listWithFilter.apart
+    events:
+      - http:
+          path: aparts/list
+          method: get
+          cors: true
+          authorizer: aws_iam
   updateApart:
     handler: functions/aparts/update.apart
     events:

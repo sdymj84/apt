@@ -1,10 +1,7 @@
 /* Use Case  
-1. /aparts/list/{aid}
-  -> Get list of a few (building) or one apartment
-    which begins with 'aid'
-2. /aparts/list
+1. /aparts/list
   -> Get list of all apartments
-3. /aparts/list with body : isPet
+2. /aparts/list with body : isPet
   -> Get list of all apartments and filter by pet
 
 */
@@ -14,23 +11,15 @@ import { success, failure } from "../../libs/response-lib";
 
 export async function apart(event, context) {
   let params = ""
-  if (event.pathParameters.aid) {
-    params = {
-      TableName: process.env.apartsTable,
-      KeyConditionExpression: 'pk = :pk AND begins_with(apartId, :aid)',
-      ExpressionAttributeValues: {
-        ':pk': 'SAVOY',
-        ':aid': event.pathParameters.aid
-      }
-    }
-  } else if (event.queryStringParameters) {
+  const qsp = event.queryStringParameters
+  if (qsp) {
     params = {
       TableName: process.env.apartsTable,
       KeyConditionExpression: 'pk = :pk',
       FilterExpression: 'isPet = :isPet',
       ExpressionAttributeValues: {
         ':pk': 'SAVOY',
-        ':isPet': event.queryStringParameters.isPet
+        ':isPet': qsp.isPet = (qsp.isPet === "true")
       }
     }
   } else {
@@ -42,8 +31,6 @@ export async function apart(event, context) {
       }
     }
   }
-
-
 
   try {
     const result = await dynamoDbLib.call("query", params);
