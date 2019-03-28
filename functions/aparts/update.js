@@ -87,13 +87,15 @@ export async function addResident(event, context) {
     },
     UpdateExpression:
       "SET residents = list_append(residents, :residents), \
-      isOccupied = :isOccupied",
+      isOccupied = :isOccupied, \
+      isPet = :isPet",
     ExpressionAttributeValues: {
       ":residents": [{
         id: data.residentId,
         name: data.name
       }],
       ":isOccupied": true,
+      ":isPet": data.isPet
     },
     ReturnValues: "ALL_NEW",
   };
@@ -112,7 +114,8 @@ export async function addResident(event, context) {
 /* 
 {
   "residentId": "test-resident-id",
-  "name": "Minjun Youn"
+  "name": "Minjun Youn",
+  "isPet": true
 }
 */
 
@@ -141,6 +144,7 @@ export async function removeResident(event, context) {
       UpdateExpression:
         `REMOVE residentId[${i}] \
         SET isOccupied = :isOccupied`,
+      // TODO: Set isPet to false when no one in the unit has pet
       ExpressionAttributeValues: {
         ":isOccupied": prevState.Item.residentId.length == 1 ? false : true,
       },
