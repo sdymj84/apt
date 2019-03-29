@@ -22,7 +22,7 @@ export async function apart(event, context) {
     TableName: process.env.apartsTable,
     Key: {
       pk: "SAVOY",
-      apartId: event.pathParameters.apartId
+      apartId: event.pathParameters.aid
     },
     UpdateExpression:
       "SET residentId = list_append(residentId, :residentId), \
@@ -127,26 +127,30 @@ export async function removeResident(event, context) {
     TableName: process.env.apartsTable,
     Key: {
       pk: "SAVOY",
-      apartId: event.pathParameters.apartId,
+      apartId: event.pathParameters.aid,
     }
   };
 
   try {
     const prevState = await dynamoDbLib.call("get", params1);
-    const i = prevState.Item.residentId.indexOf(event.pathParameters.residentId)
+    console.log("prevState:", prevState)
+    // const i = prevState.Item.residents.indexOf(event.pathParameters.rid)
+    const i = prevState.Item.residents.findIndex(resident =>
+      resident.id === event.pathParameters.rid
+    )
 
     const params2 = {
       TableName: process.env.apartsTable,
       Key: {
         pk: "SAVOY",
-        apartId: event.pathParameters.apartId
+        apartId: event.pathParameters.aid
       },
       UpdateExpression:
-        `REMOVE residentId[${i}] \
+        `REMOVE residents[${i}] \
         SET isOccupied = :isOccupied`,
       // TODO: Set isPet to false when no one in the unit has pet
       ExpressionAttributeValues: {
-        ":isOccupied": prevState.Item.residentId.length == 1 ? false : true,
+        ":isOccupied": prevState.Item.residents.length == 1 ? false : true,
       },
       ReturnValues: "ALL_NEW",
     };

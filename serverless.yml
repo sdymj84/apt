@@ -174,7 +174,7 @@ functions:
     handler: functions/aparts/update.removeResident
     events:
       - http:
-          path: aparts/{aid}/remove
+          path: aparts/{aid}/remove/{rid}
           method: put
           cors: true
           authorizer: aws_iam
