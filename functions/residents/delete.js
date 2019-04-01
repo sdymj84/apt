@@ -12,7 +12,7 @@ export async function resident(event, context) {
   const params = {
     TableName: process.env.residentsTable,
     Key: {
-      residentId: event.pathParameters.residentId,
+      residentId: event.pathParameters.rid,
     }
   };
 
@@ -21,6 +21,6 @@ export async function resident(event, context) {
     return success({ status: true });
   } catch (e) {
     console.log(e)
-    return failure({ status: false });
+    return failure({ status: false, error: e });
   }
 }

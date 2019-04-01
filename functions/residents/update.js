@@ -31,16 +31,16 @@ export async function resident(event, context) {
 
     ExpressionAttributeValues: {
       ":isPrimary": data.isPrimary || false,
-      ":apartId": data.apartId,
-      ":firstName": data.firstName,
-      ":lastName": data.lastName,
-      ":email": data.email,
-      ":phone": data.phone,
-      ":erContact": data.erContact,
-      ":isPet": data.isPet,
-      ":vehicles": data.vehicles,
-      ":notification": data.notification,
-      ":leaseTerm": data.leaseTerm,
+      ":apartId": data.apartId || "",
+      ":firstName": data.firstName || "",
+      ":lastName": data.lastName || "",
+      ":email": data.email || "",
+      ":phone": data.phone || "",
+      ":erContact": data.erContact || "",
+      ":isPet": data.isPet || "",
+      ":vehicles": data.vehicles || "",
+      ":notification": data.notifications || "",
+      ":leaseTerm": data.leaseTerm || "",
 
       /* These can be modified by manager or system only
       ":leaseStartDate": data.leaseStartDate,
