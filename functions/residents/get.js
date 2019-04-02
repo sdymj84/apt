@@ -13,7 +13,7 @@ export async function resident(event, context) {
     Key: {
       residentId: event.pathParameters.id // the name 'id' is from '/{id}'
     }
-  };
+  }
 
 
   try {
@@ -27,5 +27,30 @@ export async function resident(event, context) {
   } catch (e) {
     console.log(e)
     return failure({ status: false });
+  }
+}
+
+
+export async function residentByEmail(event, context) {
+  const params = {
+    TableName: process.env.residentsTable,
+    IndexName: "emailIndex",
+    KeyConditionExpression: 'email = :email',
+    ExpressionAttributeValues: {
+      ':email': event.pathParameters.email
+    }
+  }
+
+  try {
+    const result = await dynamoDbLib.call("query", params);
+    if (result.Items.length) {
+      // Return the retrieved item
+      return success(result.Items[0]);
+    } else {
+      return failure({ status: false, error: "Item not found." });
+    }
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false, error: e });
   }
 }

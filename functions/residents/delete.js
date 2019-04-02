@@ -12,7 +12,7 @@ export async function resident(event, context) {
   const params = {
     TableName: process.env.residentsTable,
     Key: {
-      residentId: event.pathParameters.rid,
+      residentId: event.pathParameters.id,
     }
   };
 

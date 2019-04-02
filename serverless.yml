@@ -60,6 +60,7 @@ provider:
         - "Fn::GetAtt": [ ResidentsTable, Arn ]
         - "Fn::GetAtt": [ ApartsTable, Arn ]
         - "Fn::GetAtt": [ MaintanancesTable, Arn ]
+        - "Fn::Join": ['/', ["Fn::GetAtt": [ ResidentsTable, Arn ], 'index', 'emailIndex']]
 
 functions:
 
@@ -77,6 +78,14 @@ functions:
     events:
       - http:
           path: residents/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  getResidentByEmail:
+    handler: functions/residents/get.residentByEmail
+    events:
+      - http:
+          path: residents/email/{email}
           method: get
           cors: true
           authorizer: aws_iam
