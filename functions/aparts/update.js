@@ -134,7 +134,6 @@ export async function removeResident(event, context) {
   try {
     const prevState = await dynamoDbLib.call("get", params1);
     console.log("prevState:", prevState)
-    // const i = prevState.Item.residents.indexOf(event.pathParameters.rid)
     const i = prevState.Item.residents.findIndex(resident =>
       resident.id === event.pathParameters.rid
     )
@@ -162,7 +161,48 @@ export async function removeResident(event, context) {
     console.log(e)
     return failure({ status: false, error: e });
   }
+}
 
 
+/*===================================================================
+  Update Resident in Apart (isAnnouncementConfirmed)
+===================================================================*/
+export async function confirmAnnouncement(event, context) {
+  const data = JSON.parse(event.body)
+  const params1 = {
+    TableName: process.env.apartsTable,
+    Key: {
+      pk: "SAVOY",
+      apartId: event.pathParameters.aid,
+    }
+  };
 
+  try {
+    const prevState = await dynamoDbLib.call("get", params1);
+    console.log("prevState:", prevState)
+    const i = prevState.Item.residents.findIndex(resident =>
+      resident.id === event.pathParameters.rid
+    )
+
+    const params2 = {
+      TableName: process.env.apartsTable,
+      Key: {
+        pk: "SAVOY",
+        apartId: event.pathParameters.aid
+      },
+      UpdateExpression:
+        `SET residents[${i}].isAnnouncementConfirmed = :isAnnouncementConfirmed`,
+      ExpressionAttributeValues: {
+        ":isAnnouncementConfirmed": data.isAnnouncementConfirmed
+      },
+      ReturnValues: "ALL_NEW",
+    };
+
+    const result = await dynamoDbLib.call("update", params2);
+    return success(result);
+
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false, error: e });
+  }
 }
