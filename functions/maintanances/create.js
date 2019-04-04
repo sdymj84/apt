@@ -17,10 +17,9 @@ export async function request(event, context) {
     TableName: process.env.maintanancesTable,
     Item: {
       requestId: uuidv1(),
-      apartId: event.pathParameters.apartId,
+      apartId: data.apartId,
       status: 0,  // 0:Open, 1:Progress, 2:Done
       priority: data.priority,
-      phone: data.phone,
       where: data.where,
       description: data.description,
       accessInst: data.accessInst || null,
@@ -48,6 +47,6 @@ export async function request(event, context) {
     return success(params.Item);
   } catch (e) {
     console.log(e)
-    return failure({ status: false });
+    return failure({ status: false, error: e });
   }
 }
