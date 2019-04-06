@@ -147,7 +147,6 @@ export async function removeResident(event, context) {
       UpdateExpression:
         `REMOVE residents[${i}] \
         SET isOccupied = :isOccupied`,
-      // TODO: Set isPet to false when no one in the unit has pet
       ExpressionAttributeValues: {
         ":isOccupied": prevState.Item.residents.length == 1 ? false : true,
       },
