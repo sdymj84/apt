@@ -205,6 +205,22 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  listRequests:
+    handler: functions/maintanances/list.request
+    events:
+      - http:
+          path: requests/list
+          method: get
+          cors: true
+          authorizer: aws_iam
+  updateRequestNote:
+    handler: functions/maintanances/updateNote.request
+    events:
+      - http:
+          path: requests/{requestId}
+          method: put
+          cors: true
+          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:
