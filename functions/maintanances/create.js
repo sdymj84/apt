@@ -18,7 +18,7 @@ export async function request(event, context) {
     Item: {
       requestId: uuidv1(),
       apartId: data.apartId,
-      status: 0,  // 0:Open, 1:Progress, 2:Done
+      requestStatus: 0,  // 0:Open, 1:Progress, 2:Done
       priority: data.priority,
       where: data.where,
       description: data.description,

@@ -11,6 +11,8 @@ import { success, failure } from "../../libs/response-lib";
 export async function request(event, context) {
   const params = {
     TableName: process.env.maintanancesTable,
+    FilterExpression: "requestStatus <= :requestStatus",
+    ExpressionAttributeValues: { ':requestStatus': 1 }
   }
 
   try {

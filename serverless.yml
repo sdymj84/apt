@@ -217,7 +217,15 @@ functions:
     handler: functions/maintanances/updateNote.request
     events:
       - http:
-          path: requests/{requestId}
+          path: requests/updateNote/{requestId}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  updateStatus:
+    handler: functions/maintanances/updateStatus.request
+    events:
+      - http:
+          path: requests/updateStatus/{requestId}
           method: put
           cors: true
           authorizer: aws_iam
