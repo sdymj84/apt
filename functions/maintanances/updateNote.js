@@ -13,7 +13,8 @@ export async function request(event, context) {
     TableName: process.env.maintanancesTable,
     Key: {
       requestId: event.pathParameters.requestId,
-      apartId: data.apartId
+      // apartId: data.apartId
+      requestedAt: data.requestedAt
     },
     UpdateExpression:
       "SET maintananceNote = :maintananceNote",

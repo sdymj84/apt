@@ -14,19 +14,38 @@ export async function resident(event, context) {
   const params = {
     TableName: process.env.residentsTable,
     Key: {
-      residentId: event.pathParameters.id,
+      residentId: event.pathParameters.residentId,
     },
     UpdateExpression:
-      "SET phone = :phone, \
+      "SET isPrimary = :isPrimary, \
+      apartId = :apartId, \
+      firstName = :firstName, \
+      lastName = :lastName, \
+      email = :email, \
+      phone = :phone, \
       erContact = :erContact, \
+      isPet = :isPet, \
       vehicles = :vehicles, \
-      notification = :notification",
+      notification = :notification, \
+      leaseTerm = :leaseTerm",
 
     ExpressionAttributeValues: {
+      ":isPrimary": data.isPrimary || false,
+      ":apartId": data.apartId || "",
+      ":firstName": data.firstName || "",
+      ":lastName": data.lastName || "",
+      ":email": data.email || "",
       ":phone": data.phone || "",
       ":erContact": data.erContact || "",
+      ":isPet": data.isPet || "",
       ":vehicles": data.vehicles || "",
       ":notification": data.notifications || "",
+      ":leaseTerm": data.leaseTerm || "",
+
+      /* These can be modified by manager or system only
+      ":leaseStartDate": data.leaseStartDate,
+      ":leaseEndDate": d.setDate(d.getMonth() + data.leaseTerm), 
+      */
     },
     ReturnValues: "ALL_NEW"
   };

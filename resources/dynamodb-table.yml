@@ -50,12 +50,12 @@ Resources:
       AttributeDefinitions:
         - AttributeName: requestId
           AttributeType: S
-        - AttributeName: apartId
+        - AttributeName: requestedAt
           AttributeType: S
       KeySchema:
         - AttributeName: requestId
           KeyType: HASH
-        - AttributeName: apartId
+        - AttributeName: requestedAt
           KeyType: RANGE
       # Set the capacity based on the stage
       ProvisionedThroughput:

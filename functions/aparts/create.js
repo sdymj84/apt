@@ -16,7 +16,6 @@ export async function apart(event, context) {
       pk: "SAVOY",
       apartId: data.apartId,
       residents: [],
-      buildingNum: data.buildingNum,
       address: data.address,
       floorPlan: data.floorPlan,
       isOccupied: false,
@@ -29,7 +28,6 @@ export async function apart(event, context) {
   /* mock event for create resident
   {
     "apartId": "0401",
-    "buildingNum": "4",
     "address": {
       "street": "5901 College Blvd",
       "apt": "0401",
