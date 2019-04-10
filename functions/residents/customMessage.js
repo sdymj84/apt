@@ -6,11 +6,14 @@ export function main(event, context, callback) {
     const { userName, region } = event
     const { clientId } = event.callerContext
     const { email } = event.request.userAttributes
+
     const url = 'http://localhost:3001/resident/initial-password-setup'
     const link = `<a href="${url}?code=${codeParameter}&username=${userName}&clientId=${clientId}&region=${region}&email=${email}" target="_blank">here</a>`
     event.response.emailSubject = "Welcome to Savoy Apartment. Please setup the account"; // event.request.codeParameter
-    event.response.emailMessage = `Thank you for signing up. 
-    Click ${link} to verify your email and change password.`;
+    event.response.emailMessage = `<p>Thank you for signing up. 
+    Click ${link} to verify your email and change password.</p>
+    <p>Please use temporary password you received from the office.</p>
+    <p>Thank you,</p><p>Savoy</p>`
   }
   callback(null, event)
 
