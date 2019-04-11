@@ -20,13 +20,13 @@ export async function resident(event, context) {
       "SET phone = :phone, \
       erContact = :erContact, \
       vehicles = :vehicles, \
-      notification = :notification",
+      notifications = :notifications",
 
     ExpressionAttributeValues: {
       ":phone": data.phone || "",
       ":erContact": data.erContact || "",
       ":vehicles": data.vehicles || "",
-      ":notification": data.notifications || "",
+      ":notifications": data.notifications || "",
     },
     ReturnValues: "ALL_NEW"
   };

@@ -25,7 +25,7 @@ export async function request(event, context) {
       accessInst: data.accessInst || null,
       permissionToEnter: data.permissionToEnter,
       attachment: data.attachment,
-      requestedAt: Date.now(),
+      requestedAt: Date.now().toString(),
       completedAt: null,
       maintananceNote: null
     }
