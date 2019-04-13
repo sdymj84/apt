@@ -1,6 +1,6 @@
 {
-  "body": "{\r\n  \"residentId\": \"test-resident-id3\",\r\n  \"name\": \"Gildong Hong\"\r\n}",
+  "body": "{\"residentId\": \"test-resident-id3\",\"name\": \"Gildong Youn\",\"isPet\": false}",
   "pathParameters": {
-    "aid": "0402"
+    "aid": "0102"
   }
 }

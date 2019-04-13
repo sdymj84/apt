@@ -68,26 +68,65 @@ export async function apart(event, context) {
 ===================================================================*/
 export async function addResident(event, context) {
   const data = JSON.parse(event.body)
-  const params = {
-    TableName: process.env.apartsTable,
-    Key: {
-      pk: "SAVOY",
-      apartId: event.pathParameters.aid
-    },
-    UpdateExpression:
-      "SET residents = list_append(residents, :residents), \
-      isOccupied = :isOccupied, \
-      isPet = :isPet",
-    ExpressionAttributeValues: {
-      ":residents": [{
-        id: data.residentId,
-        name: data.name
-      }],
-      ":isOccupied": true,
-      ":isPet": data.isPet
-    },
-    ReturnValues: "ALL_NEW",
-  };
+  const d = new Date()
+  let params = ""
+
+  if (data.leaseTerm) {
+    params = {
+      TableName: process.env.apartsTable,
+      Key: {
+        pk: "SAVOY",
+        apartId: event.pathParameters.aid
+      },
+      UpdateExpression:
+        "SET residents = list_append(residents, :residents), \
+        isOccupied = :isOccupied, \
+        isPet = :isPet, \
+        leaseTerm = :leaseTerm, \
+        moveInDate = :moveInDate, \
+        leaseStartDate = :leaseStartDate, \
+        leaseEndDate = :leaseEndDate",
+      ExpressionAttributeValues: {
+        ":residents": [{
+          id: data.residentId,
+          name: data.name
+        }],
+        ":isOccupied": true,
+        ":isPet": data.isPet,
+        ":leaseTerm": data.leaseTerm,
+        ":moveInDate": Date.now(),
+        ":leaseStartDate": Date.now(),
+        ":leaseEndDate": d.setDate(d.getMonth() + data.leaseTerm),
+
+        /* leaseTerm: data.leaseTerm,
+        moveInDate: Date.now(),
+        leaseStartDate: Date.now(),
+        leaseEndDate: d.setDate(d.getMonth() + data.leaseTerm), */
+      },
+      ReturnValues: "ALL_NEW",
+    }
+  } else {
+    params = {
+      TableName: process.env.apartsTable,
+      Key: {
+        pk: "SAVOY",
+        apartId: event.pathParameters.aid
+      },
+      UpdateExpression:
+        "SET residents = list_append(residents, :residents), \
+        isOccupied = :isOccupied, \
+        isPet = :isPet",
+      ExpressionAttributeValues: {
+        ":residents": [{
+          id: data.residentId,
+          name: data.name
+        }],
+        ":isOccupied": true,
+        ":isPet": data.isPet,
+      },
+      ReturnValues: "ALL_NEW",
+    }
+  }
 
   console.log(params)
 
@@ -101,6 +140,7 @@ export async function addResident(event, context) {
 }
 
 /* 
+"body": "{\"residentId\": \"test-resident-id3\",\"name\": \"Gildong Hong\",\"moveInDate\": \"100\",\"leaseTerm\": \"6\",\"isPet\": false}",
 {
   "residentId": "test-resident-id",
   "name": "Minjun Youn",

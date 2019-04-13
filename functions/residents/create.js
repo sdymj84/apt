@@ -17,7 +17,6 @@ import Amplify from 'aws-amplify'
 
 export async function resident(event, context) {
   const data = JSON.parse(event.body);
-  const d = new Date()
 
   Amplify.configure({
     Auth: {
@@ -43,10 +42,6 @@ export async function resident(event, context) {
       isPet: data.isPet,
       vehicles: data.vehicles.map(vehicle => vehicle),
       notifications: data.notifications,
-      leaseTerm: data.leaseTerm,
-      moveInDate: Date.now(),
-      leaseStartDate: Date.now(),
-      leaseEndDate: d.setDate(d.getMonth() + data.leaseTerm),
     }
   };
 
