@@ -159,7 +159,7 @@ functions:
     handler: functions/aparts/update.apart
     events:
       - http:
-          path: aparts/{aid}
+          path: aparts/info/{aid}
           method: put
           cors: true
           authorizer: aws_iam

@@ -25,30 +25,20 @@ export async function apart(event, context) {
       apartId: event.pathParameters.aid
     },
     UpdateExpression:
-      "SET residentId = list_append(residentId, :residentId), \
-      address = :address, \
+      "SET address = :address, \
       floorPlan = :floorPlan, \
-      isOccupied = :isOccupied, \
-      rentPrice = :rentPrice, \
-      announcement = :announcement",
-
+      rentPrice = :rentPrice",
     ExpressionAttributeValues: {
-      ":residentId": data.residentId,
       ":address": data.address,
       ":floorPlan": data.floorPlan,
-      ":isOccupied": data.isOccupied,
       ":rentPrice": data.rentPrice,
-      ":announcement": data.announcement
     },
     ReturnValues: "ALL_NEW",
   };
 
-  /* mock event for create resident
+  /* mock event for update apart
   {
-    "residentId": ["63c2799f-d78b-4c0b-b7d5-f362be3b2ae3"],
-    "isOccupied": true,
     "rentPrice": 950,
-    "announcement": "Welcome Minjun",
     "address": {
       "street": "5901 College Blvd",
       "apt": "0401",
@@ -59,8 +49,7 @@ export async function apart(event, context) {
       "name": "Sunset",
       "roomCount": 1,
       "sqft": 925
-    },
-    "buildingNum": "4"
+    }
   } 
   */
 
