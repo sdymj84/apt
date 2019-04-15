@@ -14,6 +14,7 @@
 ===================================================================*/
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
+import moment from 'moment'
 
 export async function apart(event, context) {
   const data = JSON.parse(event.body)
@@ -68,7 +69,10 @@ export async function apart(event, context) {
 ===================================================================*/
 export async function addResident(event, context) {
   const data = JSON.parse(event.body)
-  const d = new Date()
+  const mid = moment(data.moveInDate)
+  const leaseEndDate = new Date(mid.add(data.leaseTerm, 'months'))
+  console.log(mid)
+  console.log(leaseEndDate)
   let params = ""
 
   if (data.leaseTerm) {
@@ -94,14 +98,9 @@ export async function addResident(event, context) {
         ":isOccupied": true,
         ":isPet": data.isPet,
         ":leaseTerm": data.leaseTerm,
-        ":moveInDate": Date.now(),
-        ":leaseStartDate": Date.now(),
-        ":leaseEndDate": d.setDate(d.getMonth() + data.leaseTerm),
-
-        /* leaseTerm: data.leaseTerm,
-        moveInDate: Date.now(),
-        leaseStartDate: Date.now(),
-        leaseEndDate: d.setDate(d.getMonth() + data.leaseTerm), */
+        ":moveInDate": data.moveInDate,
+        ":leaseStartDate": data.moveInDate,
+        ":leaseEndDate": `${leaseEndDate}`
       },
       ReturnValues: "ALL_NEW",
     }
@@ -141,11 +140,6 @@ export async function addResident(event, context) {
 
 /* 
 "body": "{\"residentId\": \"test-resident-id3\",\"name\": \"Gildong Hong\",\"moveInDate\": \"100\",\"leaseTerm\": \"6\",\"isPet\": false}",
-{
-  "residentId": "test-resident-id",
-  "name": "Minjun Youn",
-  "isPet": true
-}
 */
 
 /*===================================================================

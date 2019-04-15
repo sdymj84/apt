@@ -29,6 +29,7 @@
   "dependencies": {
     "aws-amplify": "^1.1.22",
     "babel-runtime": "^6.26.0",
+    "moment": "^2.24.0",
     "node-fetch": "^2.3.0",
     "source-map-support": "^0.4.18",
     "stripe": "^5.8.0",
