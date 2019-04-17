@@ -88,6 +88,7 @@ export async function addResident(event, context) {
         isPet = :isPet, \
         leaseTerm = :leaseTerm, \
         moveInDate = :moveInDate, \
+        moveOutDate = :moveOutDate, \
         leaseStartDate = :leaseStartDate, \
         leaseEndDate = :leaseEndDate",
       ExpressionAttributeValues: {
@@ -100,6 +101,7 @@ export async function addResident(event, context) {
         ":leaseTerm": data.leaseTerm,
         ":moveInDate": data.moveInDate,
         ":leaseStartDate": data.moveInDate,
+        ":moveOutDate": `${leaseEndDate}`,
         ":leaseEndDate": `${leaseEndDate}`
       },
       ReturnValues: "ALL_NEW",
@@ -244,9 +246,9 @@ export async function earlyMoveOut(event, context) {
       apartId: event.pathParameters.aid
     },
     UpdateExpression:
-      "SET leaseEndDate = :leaseEndDate",
+      "SET moveOutDate = :moveOutDate",
     ExpressionAttributeValues: {
-      ":leaseEndDate": `${moveOutDate}`
+      ":moveOutDate": `${moveOutDate}`
     },
     ReturnValues: "ALL_NEW",
   }
@@ -258,4 +260,61 @@ export async function earlyMoveOut(event, context) {
     console.log(e)
     return failure({ status: false, error: e });
   }
+}
+
+/*===================================================================
+  Update move out date everyday
+===================================================================*/
+export async function updateMoveOut(event, context) {
+  let aparts = ""
+  const params1 = {
+    TableName: process.env.apartsTable
+  }
+
+  try {
+    aparts = await dynamoDbLib.call("scan", params1);
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false, error: e });
+  }
+
+
+
+  aparts.Items.map(async apart => {
+    if (!apart.moveOutDate) {
+      console.log(`===${apart.apartId}===`)
+      return
+    }
+
+    console.log(`===${apart.apartId}===`)
+    const today = moment().startOf('date')
+    const moveOutDate = moment(apart.moveOutDate)
+    const diffDays = moveOutDate.diff(today, 'days')
+    const adjustedMoveOutDate = today.add(60, 'days').format()
+    let params2 = ""
+
+    if (!apart.moveOutConfirmed && (diffDays < 60)) {
+      params2 = {
+        TableName: process.env.apartsTable,
+        Key: {
+          pk: "SAVOY",
+          apartId: apart.apartId
+        },
+        UpdateExpression:
+          `SET moveOutDate = :moveOutDate`,
+        ExpressionAttributeValues: {
+          ":moveOutDate": adjustedMoveOutDate
+        },
+        ReturnValues: "ALL_NEW",
+      };
+    }
+
+    try {
+      const result = await dynamoDbLib.call("update", params2);
+      return success(result);
+    } catch (e) {
+      console.log(e)
+      return failure({ status: false, error: e });
+    }
+  })
 }

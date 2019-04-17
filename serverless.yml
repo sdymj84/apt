@@ -203,6 +203,14 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+  updateMoveOut:
+    handler: functions/aparts/update.updateMoveOut
+    events:
+      - http:
+          path: aparts/updateMoveOut
+          method: put
+          cors: true
+          authorizer: aws_iam
   
   # Maintanances APIs
   createRequest:

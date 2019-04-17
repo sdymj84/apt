@@ -4,6 +4,7 @@ export function call(action, params) {
   const dynamoDb = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
   });
-
-  return dynamoDb[action](params).promise();
+  const a = dynamoDb[action](params).promise()
+  console.log(a)
+  return a;
 }
