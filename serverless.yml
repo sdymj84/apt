@@ -163,6 +163,14 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+  updateMoveOutDate:
+    handler: functions/aparts/update.earlyMoveOut
+    events:
+      - http:
+          path: aparts/earlyMoveOut/{aid}
+          method: put
+          cors: true
+          authorizer: aws_iam
   updateAnnouncement:
     handler: functions/aparts/updateAnnouncement.apart
     events:

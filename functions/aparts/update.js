@@ -228,3 +228,34 @@ export async function confirmAnnouncement(event, context) {
     return failure({ status: false, error: e });
   }
 }
+
+
+/*===================================================================
+  Update lease end date
+===================================================================*/
+export async function earlyMoveOut(event, context) {
+  const data = JSON.parse(event.body)
+  const moveOutDate = moment(data.moveOutDate).format()
+
+  const params = {
+    TableName: process.env.apartsTable,
+    Key: {
+      pk: "SAVOY",
+      apartId: event.pathParameters.aid
+    },
+    UpdateExpression:
+      "SET leaseEndDate = :leaseEndDate",
+    ExpressionAttributeValues: {
+      ":leaseEndDate": `${moveOutDate}`
+    },
+    ReturnValues: "ALL_NEW",
+  }
+
+  try {
+    const result = await dynamoDbLib.call("update", params);
+    return success(result);
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false, error: e });
+  }
+}
