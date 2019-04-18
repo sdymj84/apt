@@ -203,11 +203,19 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
-  updateMoveOut:
+  updateMoveOut: # Scan all aparts everyday for 60 day notice
     handler: functions/aparts/update.updateMoveOut
     events:
       - http:
           path: aparts/updateMoveOut
+          method: put
+          cors: true
+          authorizer: aws_iam
+  renew:
+    handler: functions/aparts/update.renew
+    events:
+      - http:
+          path: aparts/renew/{aid}
           method: put
           cors: true
           authorizer: aws_iam

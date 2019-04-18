@@ -70,9 +70,7 @@ export async function apart(event, context) {
 export async function addResident(event, context) {
   const data = JSON.parse(event.body)
   const mid = moment(data.moveInDate)
-  const leaseEndDate = new Date(mid.add(data.leaseTerm, 'months'))
-  console.log(mid)
-  console.log(leaseEndDate)
+  const leaseEndDate = mid.add(data.leaseTerm, 'months').startOf('days').format()
   let params = ""
 
   if (data.leaseTerm) {
@@ -246,9 +244,11 @@ export async function earlyMoveOut(event, context) {
       apartId: event.pathParameters.aid
     },
     UpdateExpression:
-      "SET moveOutDate = :moveOutDate",
+      "SET moveOutDate = :moveOutDate, \
+      moveOutConfirmed = :moveOutConfirmed",
     ExpressionAttributeValues: {
-      ":moveOutDate": `${moveOutDate}`
+      ":moveOutDate": `${moveOutDate}`,
+      ":moveOutConfirmed": true,
     },
     ReturnValues: "ALL_NEW",
   }
@@ -273,48 +273,89 @@ export async function updateMoveOut(event, context) {
 
   try {
     aparts = await dynamoDbLib.call("scan", params1);
+    await Promise.all(aparts.Items.map(async apart => {
+      await updateEach(apart)
+    }))
+
   } catch (e) {
     console.log(e)
     return failure({ status: false, error: e });
   }
+}
+
+async function updateEach(apart) {
+  if (!apart.moveOutDate) { return }
+  console.log(`===${apart.apartId}===`)
+
+  const today = moment().startOf('date')
+  const moveOutDate = moment(apart.moveOutDate)
+  const diffDays = moveOutDate.diff(today, 'days')
+  const adjustedMoveOutDate = today.add(60, 'days').format()
+  let params2 = ""
 
 
+  console.log(moveOutDate, diffDays, adjustedMoveOutDate)
 
-  aparts.Items.map(async apart => {
-    if (!apart.moveOutDate) {
-      console.log(`===${apart.apartId}===`)
-      return
-    }
+  if (!apart.moveOutConfirmed && (diffDays < 60)) {
+    params2 = {
+      TableName: process.env.apartsTable,
+      Key: {
+        pk: "SAVOY",
+        apartId: apart.apartId
+      },
+      UpdateExpression:
+        `SET moveOutDate = :moveOutDate`,
+      ExpressionAttributeValues: {
+        ":moveOutDate": adjustedMoveOutDate
+      },
+      ReturnValues: "ALL_NEW",
+    };
+  } else {
+    return
+  }
 
-    console.log(`===${apart.apartId}===`)
-    const today = moment().startOf('date')
-    const moveOutDate = moment(apart.moveOutDate)
-    const diffDays = moveOutDate.diff(today, 'days')
-    const adjustedMoveOutDate = today.add(60, 'days').format()
-    let params2 = ""
+  try {
+    const result = await dynamoDbLib.call("update", params2);
+    return success(result);
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false, error: e })
+  }
+}
 
-    if (!apart.moveOutConfirmed && (diffDays < 60)) {
-      params2 = {
-        TableName: process.env.apartsTable,
-        Key: {
-          pk: "SAVOY",
-          apartId: apart.apartId
-        },
-        UpdateExpression:
-          `SET moveOutDate = :moveOutDate`,
-        ExpressionAttributeValues: {
-          ":moveOutDate": adjustedMoveOutDate
-        },
-        ReturnValues: "ALL_NEW",
-      };
-    }
 
-    try {
-      const result = await dynamoDbLib.call("update", params2);
-      return success(result);
-    } catch (e) {
-      console.log(e)
-      return failure({ status: false, error: e });
-    }
-  })
+/*===================================================================
+  Renew - Update below properties
+  leaseTerm, leaseStartDate, leaseEndDate, moveOutDate
+===================================================================*/
+export async function renew(event, context) {
+  const data = JSON.parse(event.body)
+
+  const params = {
+    TableName: process.env.apartsTable,
+    Key: {
+      pk: "SAVOY",
+      apartId: event.pathParameters.aid
+    },
+    UpdateExpression:
+      "SET leaseTerm = :leaseTerm, \
+      leaseStartDate = :leaseStartDate, \
+      leaseEndDate = :leaseEndDate, \
+      moveOutDate = :moveOutDate",
+    ExpressionAttributeValues: {
+      ":leaseTerm": data.newLeaseTerm,
+      ":leaseStartDate": data.newLeaseStartDate,
+      ":leaseEndDate": data.newLeaseEndDate,
+      ":moveOutDate": data.newLeaseEndDate,
+    },
+    ReturnValues: "ALL_NEW",
+  }
+
+  try {
+    const result = await dynamoDbLib.call("update", params);
+    return success(result);
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false, error: e });
+  }
 }
