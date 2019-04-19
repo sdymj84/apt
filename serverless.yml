@@ -254,6 +254,8 @@ functions:
           cors: true
           authorizer: aws_iam
 
+  # Payments APIs
+
 # Create our resources with separate CloudFormation templates
 resources:
   # API Gateway Errors
