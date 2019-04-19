@@ -65,13 +65,14 @@ This cannot be undone.
   (ex. balance $100 : resident needs to pay $100 / balance -$100 : resident has $100 in the account so when apart charges something, resident can pay with that money)
 
 ## Apart DB Properties which need to add for payment
-- account {
+```
+account {
   name : S,
   routingNum : S,
   accountNum : S,
   accountType : S (Checking or Savings)
 }
-- card { 
+card { 
   name : S,
   number : S,
   month : S,
@@ -84,13 +85,14 @@ This cannot be undone.
     zipcode : S
   }
 }
-- autoPay {
+autoPay {
   enabled : B,
   startDate : S,
   endDate : S,
   payOnDay : S,
   autoPayAccount : {} (account or card)
 }
+```
 
 ## Factors that causes balance changes
 - Rent that charges every month (first and last month rate are prorated)
@@ -105,3 +107,21 @@ This cannot be undone.
 - 1 day prorated value : 900 / 30 = 30 (divide by 30 on whatever months for convinience
 - So first month payment is $300
 - Payment is updated 
+
+### 2. Rent on each month
+- On the 1st day of each month, at 12:00am, rent is added to balance
+
+### 3. Resident moves out normally on lease end date
+- The last moneth rent is prorated and added to balance on the 1st day
+
+### 4. Early move out
+- When move out earlier than lease end date, extra one month rent is added to balance
+
+### 5. Move out less than 60 days from today
+- add prorated value for the rest days (ex. move out 40 days from today : pay extra for 20 days which is 30 x 20 = 600)
+
+### 6. Late payment
+- add $50 if not paid until 5th
+
+### 7. Late payment2
+- add $10 everyday from 7th (pay on 10th : 50 + 10 + 10 + 10 + 10 = 90)
