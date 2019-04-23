@@ -258,7 +258,23 @@ functions:
           authorizer: aws_iam
 
   # Payments APIs
-  # TODO: Add CRUS for payment
+  # TODO: Add CRUD for payment
+  listPayments:
+    handler: functions/payments/list.payments
+    events:
+      - http:
+          path: payments/{aid}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  createPayment:
+    handler: functions/payments/create.payments
+    events:
+      - http:
+          path: payments
+          method: post
+          cors: true
+          authorizer: aws_iam
   
 # Create our resources with separate CloudFormation templates
 resources:

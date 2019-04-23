@@ -64,7 +64,7 @@ This cannot be undone.
 - balance : total money that resident needs to pay or resident has
   (ex. balance $100 : resident needs to pay $100 / balance -$100 : resident has $100 in the account so when apart charges something, resident can pay with that money)
 
-## Apart DB Properties which need to add for payment
+## Resident DB Properties which need to add for payment
 ```
 account {
   name : S,

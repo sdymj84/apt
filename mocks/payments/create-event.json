@@ -1,0 +1,3 @@
+{
+  "body": "{\r\n    \"apartId\": \"0101\",\r\n    \"title\": \"Test Charge\",\r\n    \"charge\": \"99.55\",\r\n    \"payment\": \"50.00\"\r\n  }"
+}
