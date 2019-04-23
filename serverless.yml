@@ -13,6 +13,7 @@ custom:
   residentsTable: ${self:custom.stage}-residents
   apartsTable: ${self:custom.stage}-aparts
   maintanancesTable: ${self:custom.stage}-maintanances
+  paymentsTable: ${self:custom.stage}-payments
   # Set our DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
     prod: 5
@@ -38,6 +39,7 @@ provider:
     residentsTable: ${self:custom.residentsTable}
     apartsTable: ${self:custom.apartsTable}
     maintanancesTable: ${self:custom.maintanancesTable}
+    paymentsTable: ${self:custom.paymentsTable}
     stripeSecretKey: ${self:custom.environment.stripeSecretKey}
     region: ${self:custom.environment.region}
     userPoolClientId: ${self:custom.environment.userPoolClientId}
@@ -60,6 +62,7 @@ provider:
         - "Fn::GetAtt": [ ResidentsTable, Arn ]
         - "Fn::GetAtt": [ ApartsTable, Arn ]
         - "Fn::GetAtt": [ MaintanancesTable, Arn ]
+        - "Fn::GetAtt": [ PaymentsTable, Arn ]
         - "Fn::Join": ['/', ["Fn::GetAtt": [ ResidentsTable, Arn ], 'index', 'emailIndex']]
 
 functions:

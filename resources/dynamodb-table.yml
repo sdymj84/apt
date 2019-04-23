@@ -61,3 +61,21 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: ${self:custom.tableThroughput}
         WriteCapacityUnits: ${self:custom.tableThroughput}
+  PaymentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.paymentsTable}
+      AttributeDefinitions:
+        - AttributeName: apartId
+          AttributeType: S
+        - AttributeName: transactedAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: apartId
+          KeyType: HASH
+        - AttributeName: transactedAt
+          KeyType: RANGE
+      # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
