@@ -45,8 +45,6 @@ export async function resident(event, context) {
     }
   };
 
-  // TODO: Delete leaseTerm from residents table and add to apart table
-
   /* mock event for create resident
   {
     "residentId": "test-id-1",

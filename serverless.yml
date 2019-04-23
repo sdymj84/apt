@@ -258,7 +258,8 @@ functions:
           authorizer: aws_iam
 
   # Payments APIs
-
+  # TODO: Add CRUS for payment
+  
 # Create our resources with separate CloudFormation templates
 resources:
   # API Gateway Errors
