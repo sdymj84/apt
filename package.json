@@ -31,7 +31,7 @@
     "babel-runtime": "^6.26.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.3.0",
-    "serverless-nested-stack": "0.0.7",
+    "serverless-plugin-additional-stacks": "^1.2.0",
     "source-map-support": "^0.4.18",
     "stripe": "^5.8.0",
     "uuid": "^3.2.1"

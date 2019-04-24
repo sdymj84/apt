@@ -4,6 +4,7 @@ service: apt-api
 plugins:
   - serverless-webpack
   - serverless-offline
+  - serverless-plugin-additional-stacks
 
 custom:
   # Our stage is based on what is passed in when running serverless
@@ -26,6 +27,7 @@ custom:
   # Load our secret environment variables based on the current stage.
   # Fallback to default if it is not in prod.
   environment: ${file(env.yml):${self:custom.stage}, file(env.yml):default}
+
 
 provider:
   name: aws
@@ -274,7 +276,6 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
-
   # Payments APIs
   # TODO: Add CRUD for payment
   listPayments:
@@ -293,7 +294,7 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  
+
 # Create our resources with separate CloudFormation templates
 resources:
   # API Gateway Errors
