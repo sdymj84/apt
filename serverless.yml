@@ -124,6 +124,24 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  # Bank Account
+  updateBankAccount:
+    handler: functions/residents/update.updateBankAccount
+    events:
+      - http:
+          path: residents/updateBankAccount/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  # Card
+  updateCard:
+    handler: functions/residents/update.updateCard
+    events:
+      - http:
+          path: residents/updateCard/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
   
   # Aparts APIs
   createApart:

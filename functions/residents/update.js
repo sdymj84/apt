@@ -41,3 +41,61 @@ export async function resident(event, context) {
     return failure({ status: false });
   }
 }
+
+
+/* Use Case
+1. Resident go payment > Add/Edit/Delete bank account or card
+
+*/
+
+export async function updateBankAccount(event, context) {
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.residentsTable,
+    Key: {
+      residentId: event.pathParameters.id,
+    },
+    UpdateExpression:
+      "SET bankAccount = :bankAccount",
+
+    ExpressionAttributeValues: {
+      ":bankAccount": data.bankAccount,
+    },
+    ReturnValues: "ALL_NEW"
+  };
+
+  try {
+    const result = await dynamoDbLib.call("update", params);
+    console.log(result)
+    return success({ status: true });
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false });
+  }
+}
+
+export async function updateCard(event, context) {
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.residentsTable,
+    Key: {
+      residentId: event.pathParameters.id,
+    },
+    UpdateExpression:
+      "SET card = :card",
+
+    ExpressionAttributeValues: {
+      ":card": data.card,
+    },
+    ReturnValues: "ALL_NEW"
+  };
+
+  try {
+    const result = await dynamoDbLib.call("update", params);
+    console.log(result)
+    return success({ status: true });
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false });
+  }
+}

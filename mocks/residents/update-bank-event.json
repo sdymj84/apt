@@ -1,0 +1,6 @@
+{
+  "body": "{\r\n \"bankAccount\": [{\r\n  \"name\": \"Minjun Youn\",\r\n  \"routingNum\": \"0810000782\",\r\n  \"accountNum\": \"356207403562\",\r\n  \"accountType\": \"Savings\"\r\n}]}",
+  "pathParameters": {
+    "id": "ae5a4da8-cbe8-4dd1-9210-d363aaf6b820"
+  }
+}
