@@ -35,7 +35,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: prod
+  stage: dev
   region: us-east-2
 
   # These environment variables are made available to our functions
