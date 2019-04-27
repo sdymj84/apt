@@ -77,6 +77,7 @@ card {
   number : S,
   month : S,
   year : S,
+  cardType: S,
   billingAddress {
     street : S,
     apt : S,

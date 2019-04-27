@@ -21,7 +21,7 @@ export async function apart(event, context) {
       isOccupied: false,
       rentPrice: data.rentPrice,
       announcement: data.announcement,
-      builtIn: Date.now()
+      builtIn: data.builtIn,
     }
   };
 
@@ -42,7 +42,8 @@ export async function apart(event, context) {
     },
     "isOccupied": false,
     "rentPrice": 950,
-    "announcement": "Welcome to new apartment!"
+    "announcement": "Welcome to new apartment!",
+    "builtIn": "2002"
   } */
 
 
