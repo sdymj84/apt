@@ -35,7 +35,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: prod
+  stage: dev
   region: us-east-2
 
   # These environment variables are made available to our functions
@@ -144,6 +144,15 @@ functions:
     events:
       - http:
           path: residents/updateCard/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  # Autopay
+  updateAutopay:
+    handler: functions/residents/update.updateAutopay
+    events:
+      - http:
+          path: residents/updateAutopay/{id}
           method: put
           cors: true
           authorizer: aws_iam

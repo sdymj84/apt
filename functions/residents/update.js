@@ -99,3 +99,29 @@ export async function updateCard(event, context) {
     return failure({ status: false });
   }
 }
+
+export async function updateAutopay(event, context) {
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.residentsTable,
+    Key: {
+      residentId: event.pathParameters.id,
+    },
+    UpdateExpression:
+      "SET autopay = :autopay",
+
+    ExpressionAttributeValues: {
+      ":autopay": data.autopay,
+    },
+    ReturnValues: "ALL_NEW"
+  };
+
+  try {
+    const result = await dynamoDbLib.call("update", params);
+    console.log(result)
+    return success({ status: true });
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false });
+  }
+}
