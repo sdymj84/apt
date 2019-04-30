@@ -289,7 +289,6 @@ functions:
           cors: true
           authorizer: aws_iam
   # Payments APIs
-  # TODO: Add CRUD for payment
   listPayments:
     handler: functions/payments/list.payments
     events:
@@ -303,6 +302,14 @@ functions:
     events:
       - http:
           path: payments
+          method: post
+          cors: true
+          authorizer: aws_iam
+  chargeMonthly:
+    handler: functions/payments/create.chargeMonthly
+    events:
+      - http:
+          path: payments/chargeMonthly
           method: post
           cors: true
           authorizer: aws_iam
