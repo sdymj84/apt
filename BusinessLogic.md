@@ -126,3 +126,13 @@ autoPay {
 
 ### 7. Late payment2
 - add $10 everyday from 7th (pay on 10th : 50 + 10 + 10 + 10 + 10 = 90)
+
+
+## Autopay
+- Autopay info stored in resident DB and apart DB
+  - resident : autopay { autopayMethod / text / startDate / endDate / payOnDay }
+  - apart : autopay { isAutopayEnabled / startDate / endDate / payOnDay / residentId }
+- On every 2nd day of each month
+  -> get aparts that is isAutopayEnabled: true && payOnDay: 2nd
+  -> get latest balance and pay
+  -> repeat on 3/4/5th day

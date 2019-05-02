@@ -254,6 +254,14 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+  updateAutopayOnApart:
+    handler: functions/aparts/update.updateAutopay
+    events:
+      - http:
+          path: aparts/updateAutopay/{aid}
+          method: put
+          cors: true
+          authorizer: aws_iam
   
   # Maintanances APIs
   createRequest:
@@ -310,6 +318,14 @@ functions:
     events:
       - http:
           path: payments/chargeMonthly
+          method: post
+          cors: true
+          authorizer: aws_iam
+  autopayCharge:
+    handler: functions/payments/create.autopayCharge
+    events:
+      - http:
+          path: payments/autopayCharge
           method: post
           cors: true
           authorizer: aws_iam

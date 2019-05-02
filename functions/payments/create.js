@@ -179,3 +179,87 @@ export async function chargeMonthly(event, context) {
     return failure({ status: false, error: e })
   }
 }
+
+
+export async function autopayCharge(event, context) {
+  /* 
+  On every 2nd day of each month
+  -> get aparts that is isAutopayEnabled: true && payOnDay: 2nd
+  -> get latest balance and pay
+  -> repeat on 3/4/5th day
+  */
+  let payingUnits = []
+
+  // Get unit list that is isAutopayEnabled: true && payOnDay: 2nd
+  const params1 = {
+    TableName: process.env.apartsTable,
+    KeyConditionExpression: 'pk = :pk',
+    FilterExpression:
+      'isAutopayEnabled = :isAutopayEnabled and \
+      autopayPayOnDay = :autopayPayOnDay',
+    // TODO: use startDate/endDate for more accurate filter
+    ExpressionAttributeValues: {
+      ':pk': 'SAVOY',
+      ':isAutopayEnabled': true,
+      ':autopayPayOnDay': "4th"
+      // TODO: uncomment below after finish testing
+      // ':payOnDay': moment().format('Do')
+    }
+  }
+  try {
+    const result = await dynamoDbLib.call('query', params1)
+    payingUnits = result.Items
+    console.log(payingUnits)
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    for (const unit of payingUnits) {
+      // Get the latest balance on this unit
+      let prevBalance = "0"
+      let balance = 0
+      const params2 = {
+        TableName: process.env.paymentsTable,
+        KeyConditionExpression:
+          'apartId = :apartId and transactedAt > :transactedAt',
+        ExpressionAttributeValues: {
+          ':apartId': unit.apartId,
+          ':transactedAt': '0',
+        },
+        Limit: 1,
+        ScanIndexForward: false,
+      }
+      try {
+        const payments = await dynamoDbLib.call("query", params2);
+        prevBalance = payments.Items.length && payments.Items[0].balance
+        // balance = Number(prevBalance) + Number(item.charge) - Number(item.payment)
+        // balance = Math.round(balance * 100) / 100
+      } catch (e) {
+        console.log(e)
+      }
+
+      // Save payment data into payment DB
+      const params3 = {
+        TableName: process.env.paymentsTable,
+        Item: {
+          apartId: unit.apartId,
+          transactedAt: Date.now().toString(),
+          title: "Auto Payment",
+          charge: "0",
+          payment: prevBalance,
+          balance: "0"
+        }
+      }
+      try {
+        await dynamoDbLib.call("put", params3);
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    return success({ status: true })
+  } catch (e) {
+    return failure({ status: false, error: e })
+  }
+}

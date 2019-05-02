@@ -9,13 +9,13 @@
 */
 
 
-/*===================================================================
-  Update Apart info by Manager
-===================================================================*/
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 import moment from 'moment'
 
+/*===================================================================
+  Update Apart info by Manager
+===================================================================*/
 export async function apart(event, context) {
   const data = JSON.parse(event.body)
 
@@ -351,6 +351,43 @@ export async function renew(event, context) {
     ReturnValues: "ALL_NEW",
   }
 
+  try {
+    const result = await dynamoDbLib.call("update", params);
+    return success(result);
+  } catch (e) {
+    console.log(e)
+    return failure({ status: false, error: e });
+  }
+}
+
+
+/*===================================================================
+  Update Autopay info on Apart
+===================================================================*/
+export async function updateAutopay(event, context) {
+  const data = JSON.parse(event.body)
+
+  const params = {
+    TableName: process.env.apartsTable,
+    Key: {
+      pk: "SAVOY",
+      apartId: event.pathParameters.aid
+    },
+    UpdateExpression:
+      "SET isAutopayEnabled = :isAutopayEnabled, \
+      autopayStartDate = :autopayStartDate, \
+      autopayEndDate = :autopayEndDate, \
+      autopayPayOnDay = :autopayPayOnDay, \
+      autopayResidentId = :autopayResidentId",
+    ExpressionAttributeValues: {
+      ":isAutopayEnabled": data.isAutopayEnabled,
+      ":autopayStartDate": data.autopay.startDate,
+      ":autopayEndDate": data.autopay.endDate,
+      ":autopayPayOnDay": data.autopay.payOnDay,
+      ":autopayResidentId": data.autopay.residentId,
+    },
+    ReturnValues: "ALL_NEW",
+  };
   try {
     const result = await dynamoDbLib.call("update", params);
     return success(result);
