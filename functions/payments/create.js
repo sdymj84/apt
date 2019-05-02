@@ -72,54 +72,54 @@ export async function chargeMonthly(event, context) {
     2. Loop through units - apply 5 monthly charges
   */
   // const data = JSON.parse(event.body);
-  let occupiedUnits = []
-
-  const data = [
-    {
-      title: `rent-${moment().format('MMMM')}`,
-      charge: "0",
-      payment: "0"
-    },
-    {
-      title: "water-water service",
-      charge: "52.00",
-      payment: "0"
-    },
-    {
-      title: "internet-internet service",
-      charge: "29.95",
-      payment: "0"
-    },
-    {
-      title: "cable-cable service",
-      charge: "29.95",
-      payment: "0"
-    },
-    {
-      title: "trash-trash service",
-      charge: "14.00",
-      payment: "0"
-    }
-  ]
-
-  // Get unit list that need to pay rent
-  const params1 = {
-    TableName: process.env.apartsTable,
-    KeyConditionExpression: 'pk = :pk',
-    FilterExpression: 'isOccupied = :isOccupied',
-    ExpressionAttributeValues: {
-      ':pk': 'SAVOY',
-      ':isOccupied': true
-    }
-  }
   try {
-    const result = await dynamoDbLib.call('query', params1)
-    occupiedUnits = result.Items
-  } catch (e) {
-    console.log(e)
-  }
+    let occupiedUnits = []
 
-  try {
+    const data = [
+      {
+        title: `rent-${moment().format('MMMM')}`,
+        charge: "0",
+        payment: "0"
+      },
+      {
+        title: "water-water service",
+        charge: "52.00",
+        payment: "0"
+      },
+      {
+        title: "internet-internet service",
+        charge: "29.95",
+        payment: "0"
+      },
+      {
+        title: "cable-cable service",
+        charge: "29.95",
+        payment: "0"
+      },
+      {
+        title: "trash-trash service",
+        charge: "14.00",
+        payment: "0"
+      }
+    ]
+
+    // Get unit list that need to pay rent
+    const params1 = {
+      TableName: process.env.apartsTable,
+      KeyConditionExpression: 'pk = :pk',
+      FilterExpression: 'isOccupied = :isOccupied',
+      ExpressionAttributeValues: {
+        ':pk': 'SAVOY',
+        ':isOccupied': true
+      }
+    }
+    try {
+      const result = await dynamoDbLib.call('query', params1)
+      occupiedUnits = result.Items
+    } catch (e) {
+      console.log(e)
+    }
+
 
     for (const unit of occupiedUnits) {
       // Loop charges and apply one by one
@@ -188,33 +188,36 @@ export async function autopayCharge(event, context) {
   -> get latest balance and pay
   -> repeat on 3/4/5th day
   */
-  let payingUnits = []
+  try {
+    let payingUnits = []
 
-  // Get unit list that is isAutopayEnabled: true && payOnDay: 2nd
-  const params1 = {
-    TableName: process.env.apartsTable,
-    KeyConditionExpression: 'pk = :pk',
-    FilterExpression:
-      'isAutopayEnabled = :isAutopayEnabled and \
+    // Get unit list that is isAutopayEnabled: true && payOnDay: 2nd
+    const params1 = {
+      TableName: process.env.apartsTable,
+      KeyConditionExpression: 'pk = :pk',
+      FilterExpression:
+        'isAutopayEnabled = :isAutopayEnabled and \
+      autopayStartDate <= :autopayStartDate and \
+      autopayEndDate >= :autopayEndDate and \
       autopayPayOnDay = :autopayPayOnDay',
-    // TODO: use startDate/endDate for more accurate filter
-    ExpressionAttributeValues: {
-      ':pk': 'SAVOY',
-      ':isAutopayEnabled': true,
-      ':autopayPayOnDay': "4th"
-      // TODO: uncomment below after finish testing
-      // ':payOnDay': moment().format('Do')
+      // TODO: use startDate/endDate for more accurate filter
+      ExpressionAttributeValues: {
+        ':pk': 'SAVOY',
+        ':isAutopayEnabled': true,
+        ':autopayStartDate': new Date().toISOString(),
+        ':autopayEndDate': new Date().toISOString(),
+        ':autopayPayOnDay': moment().format('Do')
+      }
     }
-  }
-  try {
-    const result = await dynamoDbLib.call('query', params1)
-    payingUnits = result.Items
-    console.log(payingUnits)
-  } catch (e) {
-    console.log(e)
-  }
+    try {
+      const result = await dynamoDbLib.call('query', params1)
+      payingUnits = result.Items
+      console.log(payingUnits)
+    } catch (e) {
+      console.log(e)
+    }
 
-  try {
+
     for (const unit of payingUnits) {
       // Get the latest balance on this unit
       let prevBalance = "0"
