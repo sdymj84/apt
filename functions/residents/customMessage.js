@@ -7,7 +7,7 @@ export function main(event, context, callback) {
     const { clientId } = event.callerContext
     const { email } = event.request.userAttributes
 
-    const url = 'http://localhost:3000/resident/initial-password-setup'
+    const url = 'https://dxeswzhmovrvr.cloudfront.net/resident/initial-password-setup'
     const link = `<a href="${url}?code=${codeParameter}&username=${userName}&clientId=${clientId}&region=${region}&email=${email}" target="_blank">here</a>`
     event.response.emailSubject = "Welcome to Savoy Apartment. Please setup the account"; // event.request.codeParameter
     event.response.emailMessage = `<p>Thank you for signing up. 
