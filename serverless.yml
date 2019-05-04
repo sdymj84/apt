@@ -313,6 +313,14 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  deletePayment:
+    handler: functions/payments/delete.payments
+    events:
+      - http:
+          path: payments/{aid}
+          method: delete
+          cors: true
+          authorizer: aws_iam
   chargeMonthly:
     handler: functions/payments/create.chargeMonthly
     events:

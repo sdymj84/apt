@@ -1,5 +1,5 @@
 /* Use Case
-1. When lease ends and balance is 0, system automatically delete resident
+1. Trigger when manager delete user
 
 Note : only delete from DB, not from user pool
 

@@ -200,7 +200,6 @@ export async function autopayCharge(event, context) {
       autopayStartDate <= :autopayStartDate and \
       autopayEndDate >= :autopayEndDate and \
       autopayPayOnDay = :autopayPayOnDay',
-      // TODO: use startDate/endDate for more accurate filter
       ExpressionAttributeValues: {
         ':pk': 'SAVOY',
         ':isAutopayEnabled': true,
