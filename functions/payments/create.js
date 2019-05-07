@@ -197,9 +197,9 @@ export async function autopayCharge(event, context) {
       KeyConditionExpression: 'pk = :pk',
       FilterExpression:
         'isAutopayEnabled = :isAutopayEnabled and \
-      autopayStartDate <= :autopayStartDate and \
-      autopayEndDate >= :autopayEndDate and \
-      autopayPayOnDay = :autopayPayOnDay',
+        autopayStartDate <= :autopayStartDate and \
+        autopayEndDate >= :autopayEndDate and \
+        autopayPayOnDay = :autopayPayOnDay',
       ExpressionAttributeValues: {
         ':pk': 'SAVOY',
         ':isAutopayEnabled': true,

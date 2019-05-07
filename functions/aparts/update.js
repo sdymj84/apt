@@ -285,7 +285,6 @@ export async function updateMoveOut(event, context) {
 
 async function updateEach(apart) {
   if (!apart.moveOutDate) { return }
-  console.log(`===${apart.apartId}===`)
 
   const today = moment().startOf('date')
   const moveOutDate = moment(apart.moveOutDate)
@@ -293,23 +292,47 @@ async function updateEach(apart) {
   const adjustedMoveOutDate = today.add(60, 'days').format()
   let params2 = ""
 
-
-  console.log(moveOutDate, diffDays, adjustedMoveOutDate)
-
   if (!apart.moveOutConfirmed && (diffDays < 60)) {
-    params2 = {
-      TableName: process.env.apartsTable,
-      Key: {
-        pk: "SAVOY",
-        apartId: apart.apartId
-      },
-      UpdateExpression:
-        `SET moveOutDate = :moveOutDate`,
-      ExpressionAttributeValues: {
-        ":moveOutDate": adjustedMoveOutDate
-      },
-      ReturnValues: "ALL_NEW",
-    };
+    console.log(apart.apartId)
+    const residentsUpdateExpression = apart.residents.map((resident, i) => {
+      return `residents[${i}].isAnnouncementConfirmed = :isAnnouncementConfirmed`
+    }).join(',')
+
+    const message = `Move out date is ${diffDays} days ahead. 
+      Your move out date is postponed to 60 days from today according to 60 notice rule. 
+      Please contact office to confirm move out date or renew. Thank you.`
+
+    params2 = residentsUpdateExpression
+      ? {
+        TableName: process.env.apartsTable,
+        Key: {
+          pk: "SAVOY",
+          apartId: apart.apartId
+        },
+        UpdateExpression:
+          "SET moveOutDate = :moveOutDate, \
+          announcement = :announcement," + residentsUpdateExpression,
+        ExpressionAttributeValues: {
+          ":moveOutDate": adjustedMoveOutDate,
+          ":announcement": message,
+          ":isAnnouncementConfirmed": false
+        },
+        ReturnValues: "ALL_NEW",
+      } : {
+        TableName: process.env.apartsTable,
+        Key: {
+          pk: "SAVOY",
+          apartId: apart.apartId
+        },
+        UpdateExpression:
+          "SET moveOutDate = :moveOutDate, \
+          announcement = :announcement",
+        ExpressionAttributeValues: {
+          ":moveOutDate": adjustedMoveOutDate,
+          ":announcement": message
+        },
+        ReturnValues: "ALL_NEW",
+      }
   } else {
     return
   }

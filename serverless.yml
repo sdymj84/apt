@@ -238,6 +238,14 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+  alertLatePayment:
+    handler: functions/aparts/updateAnnouncement.alertLatePayment
+    events:
+      - http:
+          path: aparts/alertLatePayment/{aid}
+          method: put
+          cors: true
+          authorizer: aws_iam
   updateMoveOut: # Scan all aparts everyday for 60 day notice
     handler: functions/aparts/update.updateMoveOut
     events:
