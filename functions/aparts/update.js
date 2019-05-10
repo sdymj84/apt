@@ -284,6 +284,8 @@ export async function updateMoveOut(event, context) {
 }
 
 async function updateEach(apart) {
+
+  // Skip if no moveOutDate (vacant) or moveOutDateConfirmed
   if (!apart.moveOutDate) { return }
 
   const today = moment().startOf('date')
@@ -294,6 +296,9 @@ async function updateEach(apart) {
 
   if (!apart.moveOutConfirmed && (diffDays < 60)) {
     console.log(apart.apartId)
+
+    // Alert each residents in the unit that you reached 60 days
+    // Update moveOutDate to 60 days from today
     const residentsUpdateExpression = apart.residents.map((resident, i) => {
       return `residents[${i}].isAnnouncementConfirmed = :isAnnouncementConfirmed`
     }).join(',')
