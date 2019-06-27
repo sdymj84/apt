@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "aws-amplify": "^1.1.22",
+    "aws-cli": "^0.0.2",
     "babel-runtime": "^6.26.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.3.0",
